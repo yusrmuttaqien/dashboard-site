@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import M from '@/assets/svg/Magnifier';
+import OV from '../OverviewVisa';
 
 export const Container = styled.div`
   flex: 1;
@@ -19,10 +20,11 @@ export const Header = styled.header`
 
 export const HeaderContainer = styled.div`
   background-color: ${({ theme }) => theme.colors.purple.base};
+  color: ${({ theme }) => theme.colors.black.base};
   margin-right: 16px;
 `;
 
-export const Magnifier = styled(M)`
+export const Search = styled(M)`
   background-color: ${({ theme }) => theme.colors.white.base};
   color: ${({ theme }) => theme.colors.black.base};
   font-size: 20px;
@@ -40,3 +42,10 @@ export const Magnifier = styled(M)`
     background-color: ${({ theme }) => theme.colors.purple.active(0.5)};
   }
 `;
+
+export const Mozaic = styled.div`
+  display: grid;
+  margin-top: 16px;
+`;
+
+export const Visa = styled(OV)``;

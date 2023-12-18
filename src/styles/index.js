@@ -40,6 +40,14 @@ export const GlobalStyle = createGlobalStyle`
     color: ${({ theme }) => theme.colors.black.base};
   }
 
+  .truncate {
+    display: -webkit-box;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 1;
+  }
+
   &::-webkit-scrollbar {
     width: 5px;
     height: 5px;
