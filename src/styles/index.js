@@ -14,18 +14,12 @@ const presets = {
     },
   },
   screen: {
-    mobile: '319',
+    mobile: '320',
     tablet: {
-      min: '520',
-      max: '768',
+      min: '744',
+      // max: '768',
     },
-    desktop: '1279',
-  },
-  space: {
-    x: {
-      mobile: '1.875rem',
-      desktop: '5.5rem',
-    },
+    desktop: '1280',
   },
 };
 
@@ -42,37 +36,25 @@ export const GlobalStyle = createGlobalStyle`
   margin: 0;
   padding: 0;
 
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  -webkit-text-size-adjust: 100%;
-
   a {
     color: ${({ theme }) => theme.colors.black.base};
   }
 
-  /* width */
   &::-webkit-scrollbar {
     width: 5px;
     height: 5px;
   }
-
-  /* Track */
   &::-webkit-scrollbar-track {
     background: ${({ theme }) => theme.colors.purple.GlobalStyle};
   }
-  
-  /* Handle */
   &::-webkit-scrollbar-thumb {
-    background: ${({ theme }) => theme.colors.purple.active(0.5)};
+    background: ${({ theme }) => theme.colors.purple.active(0.3)};
   }
 }
 
 html {
   background-color: ${({ theme }) => theme.colors.purple.base};
   color: ${({ theme }) => theme.colors.black.base};
-  font-size: calc(100vw * 16 / ${({ theme }) => theme.screen.mobile});
   min-width: 320px;
 
   body {
@@ -84,14 +66,6 @@ html {
   }
 
   @media (prefers-color-scheme: light) {
-  }
-
-  @media screen and (min-width: ${({ theme }) => theme.screen.tablet.min}px) {
-    font-size: calc(100vw * 16 / ${({ theme }) => theme.screen.tablet.min});
-  }
-
-  @media screen and (min-width: ${({ theme }) => theme.screen.desktop}px) {
-    font-size: calc(100vw * 16 / ${({ theme }) => theme.screen.desktop});
   }
 }
 `;
