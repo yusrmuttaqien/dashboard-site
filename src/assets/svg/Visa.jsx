@@ -1,12 +1,6 @@
 export default function Visa(props) {
   return (
-    <svg
-      width="1em"
-      viewBox="0 0 462 150"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-      {...props}
-    >
+    <svg viewBox="0 0 462 150" fill="none" xmlns="http://www.w3.org/2000/svg" {...props}>
       <path
         fillRule="evenodd"
         clipRule="evenodd"

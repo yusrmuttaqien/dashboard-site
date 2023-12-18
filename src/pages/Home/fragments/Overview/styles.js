@@ -24,10 +24,11 @@ export const HeaderContainer = styled.div`
   margin-right: 16px;
 `;
 
-export const Search = styled(M)`
+export const Search = styled(M).attrs(() => ({
+  width: 20,
+}))`
   background-color: ${({ theme }) => theme.colors.white.base};
   color: ${({ theme }) => theme.colors.black.base};
-  font-size: 20px;
   padding: 8px;
   border-radius: 100%;
   cursor: pointer;

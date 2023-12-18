@@ -11,16 +11,18 @@ export const Nav = styled.nav`
   align-items: center;
 `;
 
-export const Logo = styled(L)`
+export const Logo = styled(L).attrs(() => ({
+  width: 24,
+}))`
   color: ${({ theme }) => theme.colors.black.base};
-  font-size: 24px;
   margin: 0 4px;
   cursor: pointer;
 `;
 
-export const Exit = styled(E)`
+export const Exit = styled(E).attrs(() => ({
+  width: 20,
+}))`
   color: ${({ theme }) => theme.colors.black.base};
-  font-size: 20px;
   margin: 0 4px;
   cursor: pointer;
 `;
@@ -36,8 +38,9 @@ export const NavLists = styled.div`
   gap: 8px;
 `;
 
-export const NavList = styled.svg`
-  font-size: 18px;
+export const NavList = styled.svg.attrs(() => ({
+  width: 18,
+}))`
   cursor: pointer;
   background-color: ${({ theme, $active }) =>
     $active ? theme.colors.purple.active() : 'transparent'};

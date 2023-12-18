@@ -14,16 +14,18 @@ export const Container = styled.figure`
   overflow: hidden;
 `;
 
-export const Logo = styled(L)`
+export const Logo = styled(L).attrs(() => ({
+  width: 120,
+}))`
   color: ${({ theme }) => theme.colors.purple.base};
-  font-size: 120px;
   padding: 40px;
   opacity: 0.5;
 `;
 
-export const LogoOutline = styled(LO)`
+export const LogoOutline = styled(LO).attrs(() => ({
+  width: 250,
+}))`
   color: ${({ theme }) => theme.colors.purple.base};
-  font-size: 200px;
   position: absolute;
   top: 50%;
   left: 50%;
@@ -46,9 +48,10 @@ export const InfoSection = styled.div`
   gap: 16px;
 `;
 
-export const VisaLogo = styled(V)`
+export const VisaLogo = styled(V).attrs(() => ({
+  width: 42,
+}))`
   color: ${({ theme }) => theme.colors.white.base};
-  font-size: 42px;
 `;
 
 export const InfoDetails = styled.p`
