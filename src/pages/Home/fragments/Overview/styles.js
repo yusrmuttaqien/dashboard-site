@@ -2,10 +2,15 @@ import styled from 'styled-components';
 import M from '@/assets/svg/Magnifier';
 import OV from '../OverviewVisa';
 import OTD from '../OverviewToDo';
+import OA from '../OverviewActivity';
 
 export const Container = styled.div`
   flex: 1;
   padding: 20px 16px;
+  height: 100%;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
 `;
 
 export const Heading = styled.h2`
@@ -21,12 +26,11 @@ export const Header = styled.header`
 
 export const HeaderContainer = styled.div`
   background-color: ${({ theme }) => theme.colors.purple.base()};
-  color: ${({ theme }) => theme.colors.black.base()};
   margin-right: 16px;
 `;
 
 export const Search = styled(M).attrs(() => ({
-  width: 20,
+  width: 38,
 }))`
   background-color: ${({ theme }) => theme.colors.white.base};
   color: ${({ theme }) => theme.colors.black.base()};
@@ -49,8 +53,23 @@ export const Mozaic = styled.div`
   display: grid;
   margin-top: 16px;
   gap: 10px;
+  overflow: auto;
+  scrollbar-width: none;
+  border-radius: 16px;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
 `;
 
-export const Visa = styled(OV)``;
+export const Visa = styled(OV)`
+  grid-area: 'visa';
+`;
 
-export const ToDo = styled(OTD)``;
+export const ToDo = styled(OTD)`
+  grid-area: 'todo';
+`;
+
+export const Activity = styled(OA)`
+  grid-area: 'activity';
+`;

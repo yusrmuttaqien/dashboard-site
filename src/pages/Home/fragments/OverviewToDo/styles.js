@@ -53,6 +53,7 @@ export const Item = styled.div`
   border-radius: 8px;
   display: flex;
   justify-content: space-between;
+  gap: 8px;
 `;
 
 export const ItemContainer = styled.div`
@@ -62,6 +63,7 @@ export const ItemContainer = styled.div`
   grid-template-columns: 1fr;
   max-height: 150px;
   overflow-y: auto;
+  overscroll-behavior: contain;
 
   .empty-state {
     margin: 20px;

@@ -1,6 +1,16 @@
 import { getLocalStorage } from '@/utils/localStorage';
 import { STORAGE_USERNAME } from '@/constants/localStorage';
-import { Container, Heading, Header, HeaderContainer, Search, Mozaic, Visa, ToDo } from './styles';
+import {
+  Container,
+  Heading,
+  Header,
+  HeaderContainer,
+  Search,
+  Mozaic,
+  Visa,
+  ToDo,
+  Activity,
+} from './styles';
 
 export default function Overview() {
   const username = getLocalStorage(STORAGE_USERNAME);
@@ -21,6 +31,7 @@ export default function Overview() {
       <Mozaic>
         <Visa />
         <ToDo />
+        <Activity />
       </Mozaic>
     </Container>
   );

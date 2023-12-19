@@ -35,6 +35,7 @@ export const GlobalStyle = createGlobalStyle`
   font-family: 'Plus Jakarta Sans';
   margin: 0;
   padding: 0;
+  box-sizing: border-box;
 
   a {
     color: ${({ theme }) => theme.colors.black.base()};
@@ -67,9 +68,10 @@ html {
   background-color: ${({ theme }) => theme.colors.purple.base()};
   color: ${({ theme }) => theme.colors.black.base()};
   min-width: 320px;
-
+  
   body {
-    height: 100svh;
+    height: 320px;
+    min-height: 100svh;
     position: relative;
 
     #portal-root {

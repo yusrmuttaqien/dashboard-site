@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useHookstate, none } from '@hookstate/core';
+import useActivities from '@/hooks/useActivities';
 import { TODO_STATE_PROVIDER } from '@/utils/states';
 import { MODAL_ADD_TODO } from '@/constants/modal';
 import CheckboxInput from '@/components/CheckboxInput';
@@ -18,15 +19,23 @@ import {
 
 export default function OverviewToDo() {
   const [isAddTodo, setIsAddTodo] = useState(false);
+  const { addActivities } = useActivities();
   const toDoState = useHookstate(TODO_STATE_PROVIDER);
-  const todos = toDoState.get();
-  const totalTodo = todos.length;
-  const doneTodo = todos.filter((todo) => todo.done).length;
+  const totalTodo = toDoState.length;
+  const doneTodo = toDoState.filter((todo) => todo.done.get()).length;
 
   const _handleChange = (todo) => (isChecked) => {
+    addActivities({
+      title: `${isChecked ? 'Checked' : 'Unchecked'}: ${todo.title.get()}`,
+      type: 'ToDo',
+    });
     todo.done.set(isChecked);
   };
   const _handleDelete = (todo) => () => {
+    addActivities({
+      title: `Deleted: ${todo.title.get()}`,
+      type: 'ToDo',
+    });
     todo.set(none);
   };
 
@@ -45,9 +54,9 @@ export default function OverviewToDo() {
         </AddContainer>
       </Heading>
       <ItemContainer>
-        {toDoState.map((todo, idx) => (
+        {toDoState.map((todo) => (
           <ToDoItem
-            key={`${todos[idx].title}-${todos[idx].date.created}`}
+            key={`${todo.title.get()}-${todo.date.get()}`}
             content={todo.get()}
             onChange={_handleChange(todo)}
             onDelete={_handleDelete(todo)}
@@ -84,9 +93,14 @@ function ToDoItem({ content, onChange, onDelete }) {
 function AddToDo({ states }) {
   const [isAddTodo, setIsAddTodo] = states;
   const toDoState = useHookstate(TODO_STATE_PROVIDER);
+  const { addActivities } = useActivities();
 
   const _handleAdd = (v) => {
-    toDoState.merge([{ title: v, done: false, date: { created: Date.now() } }]);
+    toDoState.merge([{ title: v, done: false, date: new Date() }]);
+    addActivities({
+      title: `Added: ${v}`,
+      type: 'ToDo',
+    });
     setIsAddTodo(false);
   };
 

@@ -12,7 +12,7 @@ export const Nav = styled.nav`
 `;
 
 export const Logo = styled(L).attrs(() => ({
-  width: 24,
+  width: 32,
 }))`
   color: ${({ theme }) => theme.colors.black.base()};
   margin: 0 4px;
@@ -20,7 +20,7 @@ export const Logo = styled(L).attrs(() => ({
 `;
 
 export const Exit = styled(E).attrs(() => ({
-  width: 20,
+  width: 24,
 }))`
   color: ${({ theme }) => theme.colors.black.base()};
   margin: 0 4px;
@@ -39,7 +39,8 @@ export const NavLists = styled.div`
 `;
 
 export const NavList = styled.svg.attrs(() => ({
-  width: 18,
+  width: 26,
+  height: 26,
 }))`
   cursor: pointer;
   background-color: ${({ theme, $active }) =>

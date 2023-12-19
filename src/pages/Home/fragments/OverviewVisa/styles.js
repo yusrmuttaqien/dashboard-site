@@ -5,6 +5,7 @@ import V from '@/assets/svg/Visa';
 
 export const Container = styled.figure`
   width: 100%;
+  height: max-content;
   background-color: ${({ theme }) => theme.colors.purple.active()};
   color: ${({ theme }) => theme.colors.white.base};
   position: relative;

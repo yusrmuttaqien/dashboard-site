@@ -42,7 +42,7 @@ export const Container = styled.label`
 
 export const Box = styled.div`
   aspect-ratio: 1/1;
-  height: 14px;
+  height: 18px;
   border-radius: 4px;
   position: relative;
   border: 2px solid ${({ theme }) => theme.colors.purple.active(0.3)};
