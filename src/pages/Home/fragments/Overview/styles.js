@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import M from '@/assets/svg/Magnifier';
 import OV from '../OverviewVisa';
+import OTD from '../OverviewToDo';
 
 export const Container = styled.div`
   flex: 1;
@@ -47,6 +48,9 @@ export const Search = styled(M).attrs(() => ({
 export const Mozaic = styled.div`
   display: grid;
   margin-top: 16px;
+  gap: 10px;
 `;
 
 export const Visa = styled(OV)``;
+
+export const ToDo = styled(OTD)``;
