@@ -27,7 +27,7 @@ export const Container = styled.label`
   position: relative;
   display: flex;
   align-items: center;
-  gap: 4px;
+  gap: 8px;
 
   p {
     user-select: none;

@@ -6,8 +6,10 @@ export const Overlay = styled.div`
   background-color: ${({ theme, $stack }) =>
     $stack ? theme.colors.purple.base(0.5) : 'transparent'};
   pointer-events: ${({ $stack }) => ($stack ? 'all' : 'none')};
-  transition: background-color 0.2s ease-in-out;
+  transition: ${({ $stack }) =>
+    $stack ? 'background-color 0.2s ease-in-out 0.15s' : 'background-color 0.2s ease-in-out'};
   overflow: hidden;
+  z-index: ${({ $stack }) => $stack};
 `;
 
 export const Content = styled.div`
@@ -17,7 +19,7 @@ export const Content = styled.div`
   bottom: 0;
   background-color: ${({ theme }) => theme.colors.white.base};
   box-shadow: 0px 0px 10px 0px ${({ theme }) => theme.colors.black.base(0.15)};
-  padding: 16px;
+  padding: 24px 18px;
   border-radius: 16px;
   pointer-events: ${({ $stack }) => ($stack ? 'all' : 'none')};
   transform: ${({ $stack }) => ($stack ? 'translateY(0)' : 'translateY(100%)')};

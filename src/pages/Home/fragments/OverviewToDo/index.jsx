@@ -13,6 +13,7 @@ import {
   Item,
   ItemContainer,
   Delete,
+  TextInput,
 } from './styles';
 
 export default function OverviewToDo() {
@@ -82,10 +83,21 @@ function ToDoItem({ content, onChange, onDelete }) {
 
 function AddToDo({ states }) {
   const [isAddTodo, setIsAddTodo] = states;
+  const toDoState = useHookstate(TODO_STATE_PROVIDER);
+
+  const _handleAdd = (v) => {
+    toDoState.merge([{ title: v, done: false, date: { created: Date.now() } }]);
+    setIsAddTodo(false);
+  };
 
   return (
     <Modal id={MODAL_ADD_TODO} isOpen={isAddTodo} onClose={() => setIsAddTodo(false)}>
-      Add modal
+      <h3>Add todo item</h3>
+      <TextInput
+        placeholder="Input todo title here (press enter to add)"
+        onEnter={_handleAdd}
+        reset={isAddTodo}
+      />
     </Modal>
   );
 }

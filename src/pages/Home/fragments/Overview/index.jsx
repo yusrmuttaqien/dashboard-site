@@ -9,8 +9,12 @@ export default function Overview() {
     <Container>
       <Header>
         <HeaderContainer>
-          <Heading className="truncate">Hello, {username}</Heading>
-          <p className="truncate">Have a look around! Hope you like it!</p>
+          <Heading className="truncate" title={`Hello, ${username}`}>
+            Hello, {username}
+          </Heading>
+          <p className="truncate" title="Have a look around! Hope you like it!">
+            Have a look around! Hope you like it!
+          </p>
         </HeaderContainer>
         <Search />
       </Header>

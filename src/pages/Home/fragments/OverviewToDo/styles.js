@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import P from '@/assets/svg/Plus';
 import B from '@/assets/svg/Bin';
+import TI from '@/components/TextInput';
 
 export const Container = styled.section`
   background-color: ${({ theme }) => theme.colors.white.base};
@@ -72,4 +73,9 @@ export const Delete = styled(B).attrs(() => ({
   color: red;
   flex-shrink: 0;
   cursor: pointer;
+`;
+
+export const TextInput = styled(TI)`
+  margin-top: 12px;
+  width: 100%;
 `;
