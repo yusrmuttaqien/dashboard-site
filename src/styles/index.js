@@ -3,14 +3,14 @@ import { createGlobalStyle } from 'styled-components';
 const presets = {
   colors: {
     purple: {
-      base: 'rgba(248, 247, 253, 1)',
+      base: (alpha = 1) => `rgba(248, 247, 253, ${alpha})`,
       active: (alpha = 1) => `rgba(93, 105, 245, ${alpha})`,
     },
     white: {
       base: 'rgba(255, 255, 255, 1)',
     },
     black: {
-      base: 'rgba(10, 9, 22, 1)',
+      base: (alpha = 1) => `rgba(10, 9, 22, ${alpha})`,
     },
   },
   screen: {
@@ -37,7 +37,7 @@ export const GlobalStyle = createGlobalStyle`
   padding: 0;
 
   a {
-    color: ${({ theme }) => theme.colors.black.base};
+    color: ${({ theme }) => theme.colors.black.base()};
   }
 
   .truncate {
@@ -61,14 +61,22 @@ export const GlobalStyle = createGlobalStyle`
 }
 
 html {
-  background-color: ${({ theme }) => theme.colors.purple.base};
-  color: ${({ theme }) => theme.colors.black.base};
+  background-color: ${({ theme }) => theme.colors.purple.base()};
+  color: ${({ theme }) => theme.colors.black.base()};
   min-width: 320px;
 
   body {
     height: 100svh;
+    position: relative;
 
-    #root, #root main {
+    #portal-root {
+      position: absolute;
+      inset: 0;
+      z-index: 999;
+      pointer-events: none;
+    }
+
+    #root, #root main, #portal-root {
       height: 100%;
     }
   }

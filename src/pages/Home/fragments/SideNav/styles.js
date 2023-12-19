@@ -14,7 +14,7 @@ export const Nav = styled.nav`
 export const Logo = styled(L).attrs(() => ({
   width: 24,
 }))`
-  color: ${({ theme }) => theme.colors.black.base};
+  color: ${({ theme }) => theme.colors.black.base()};
   margin: 0 4px;
   cursor: pointer;
 `;
@@ -22,7 +22,7 @@ export const Logo = styled(L).attrs(() => ({
 export const Exit = styled(E).attrs(() => ({
   width: 20,
 }))`
-  color: ${({ theme }) => theme.colors.black.base};
+  color: ${({ theme }) => theme.colors.black.base()};
   margin: 0 4px;
   cursor: pointer;
 `;
@@ -32,7 +32,7 @@ export const NavLists = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  background-color: ${({ theme }) => theme.colors.purple.base};
+  background-color: ${({ theme }) => theme.colors.purple.base()};
   border-radius: 16px;
   padding: 4px;
   gap: 8px;
@@ -44,7 +44,7 @@ export const NavList = styled.svg.attrs(() => ({
   cursor: pointer;
   background-color: ${({ theme, $active }) =>
     $active ? theme.colors.purple.active() : 'transparent'};
-  color: ${({ theme, $active }) => ($active ? theme.colors.white.base : theme.colors.black.base)};
+  color: ${({ theme, $active }) => ($active ? theme.colors.white.base : theme.colors.black.base())};
   border-radius: 100%;
   padding: 4px;
   transition: background-color 0.1s ease-in-out;

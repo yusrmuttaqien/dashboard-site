@@ -1,4 +1,5 @@
 import { hookstate } from '@hookstate/core';
-import { DEFAULT_STATE_TODO } from '@/constants/states';
+import { STATE_DEFAULT_TODO } from '@/constants/states';
 
-export const TODO_STATE_PROVIDER = hookstate(DEFAULT_STATE_TODO);
+export const TODO_STATE_PROVIDER = hookstate(STATE_DEFAULT_TODO);
+export const MDOAL_STACK_STATE_PROVIDER = hookstate([]);

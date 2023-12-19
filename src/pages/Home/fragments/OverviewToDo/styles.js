@@ -57,7 +57,7 @@ export const Item = styled.div`
 export const ItemContainer = styled.div`
   display: grid;
   gap: 4px;
-  margin-top: 8px;
+  margin-top: 12px;
   grid-template-columns: 1fr;
 
   .empty-state {

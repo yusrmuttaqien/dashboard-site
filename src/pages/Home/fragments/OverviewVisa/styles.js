@@ -12,20 +12,20 @@ export const Container = styled.figure`
   place-content: center;
   border-radius: 16px;
   overflow: hidden;
+  aspect-ratio: 3/2;
 `;
 
 export const Logo = styled(L).attrs(() => ({
   width: 120,
 }))`
-  color: ${({ theme }) => theme.colors.purple.base};
-  padding: 40px;
+  color: ${({ theme }) => theme.colors.purple.base()};
   opacity: 0.5;
 `;
 
 export const LogoOutline = styled(LO).attrs(() => ({
   width: 250,
 }))`
-  color: ${({ theme }) => theme.colors.purple.base};
+  color: ${({ theme }) => theme.colors.purple.base()};
   position: absolute;
   top: 50%;
   left: 50%;

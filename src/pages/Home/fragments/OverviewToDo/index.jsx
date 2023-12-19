@@ -1,7 +1,9 @@
 import { useState } from 'react';
 import { useHookstate, none } from '@hookstate/core';
 import { TODO_STATE_PROVIDER } from '@/utils/states';
+import { MODAL_ADD_TODO } from '@/constants/modal';
 import CheckboxInput from '@/components/CheckboxInput';
+import Modal from '@/components/Modal';
 import {
   Container,
   HeadingContainer,
@@ -14,6 +16,7 @@ import {
 } from './styles';
 
 export default function OverviewToDo() {
+  const [isAddTodo, setIsAddTodo] = useState(false);
   const toDoState = useHookstate(TODO_STATE_PROVIDER);
   const todos = toDoState.get();
   const totalTodo = todos.length;
@@ -35,7 +38,7 @@ export default function OverviewToDo() {
             {doneTodo}/{totalTodo} <strong>done</strong>
           </p>
         </HeadingContainer>
-        <AddContainer>
+        <AddContainer onClick={() => setIsAddTodo(true)}>
           <Plus />
           <p>Add</p>
         </AddContainer>
@@ -51,6 +54,7 @@ export default function OverviewToDo() {
         ))}
         {totalTodo === 0 && <p className="empty-state">Nothing to do!</p>}
       </ItemContainer>
+      <AddToDo states={[isAddTodo, setIsAddTodo]} />
     </Container>
   );
 }
@@ -73,5 +77,15 @@ function ToDoItem({ content, onChange, onDelete }) {
       />
       <Delete onClick={onDelete} />
     </Item>
+  );
+}
+
+function AddToDo({ states }) {
+  const [isAddTodo, setIsAddTodo] = states;
+
+  return (
+    <Modal id={MODAL_ADD_TODO} isOpen={isAddTodo} onClose={() => setIsAddTodo(false)}>
+      Add modal
+    </Modal>
   );
 }

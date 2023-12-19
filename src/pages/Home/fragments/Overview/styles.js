@@ -13,15 +13,15 @@ export const Heading = styled.h2`
 `;
 
 export const Header = styled.header`
-  background-color: ${({ theme }) => theme.colors.purple.base};
+  background-color: ${({ theme }) => theme.colors.purple.base()};
   display: flex;
   align-items: center;
   justify-content: space-between;
 `;
 
 export const HeaderContainer = styled.div`
-  background-color: ${({ theme }) => theme.colors.purple.base};
-  color: ${({ theme }) => theme.colors.black.base};
+  background-color: ${({ theme }) => theme.colors.purple.base()};
+  color: ${({ theme }) => theme.colors.black.base()};
   margin-right: 16px;
 `;
 
@@ -29,7 +29,7 @@ export const Search = styled(M).attrs(() => ({
   width: 20,
 }))`
   background-color: ${({ theme }) => theme.colors.white.base};
-  color: ${({ theme }) => theme.colors.black.base};
+  color: ${({ theme }) => theme.colors.black.base()};
   padding: 8px;
   border-radius: 100%;
   cursor: pointer;
