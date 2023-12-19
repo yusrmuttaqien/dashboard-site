@@ -60,6 +60,8 @@ export const ItemContainer = styled.div`
   gap: 4px;
   margin-top: 12px;
   grid-template-columns: 1fr;
+  max-height: 150px;
+  overflow-y: auto;
 
   .empty-state {
     margin: 20px;

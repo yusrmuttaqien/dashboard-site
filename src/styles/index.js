@@ -49,14 +49,17 @@ export const GlobalStyle = createGlobalStyle`
   }
 
   &::-webkit-scrollbar {
-    width: 5px;
-    height: 5px;
+    width: 8px;
+    height: 8px;
   }
   &::-webkit-scrollbar-track {
     background: ${({ theme }) => theme.colors.purple.GlobalStyle};
   }
   &::-webkit-scrollbar-thumb {
     background: ${({ theme }) => theme.colors.purple.active(0.3)};
+    border-radius: 4px;
+    border: 2px solid transparent;
+    background-clip: padding-box;
   }
 }
 
