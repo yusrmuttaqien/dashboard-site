@@ -13,7 +13,9 @@ export default function SideBar(props) {
       <span className="handle" onClick={() => setViewSideBar((prev) => !prev)}>
         ☞
       </span>
-      <SideBarAbout />
+      <div className="bar-wrapper">
+        <SideBarAbout />
+      </div>
     </Container>
   );
 }
