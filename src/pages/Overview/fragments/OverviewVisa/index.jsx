@@ -1,3 +1,5 @@
+import { useHookstate } from '@hookstate/core';
+import { CARD_STATE_PROVIDER } from '@/utils/states';
 import {
   Container,
   Logo,
@@ -10,6 +12,8 @@ import {
 
 export default function OverviewVisa(props) {
   const { className } = props;
+  const cardState = useHookstate(CARD_STATE_PROVIDER);
+  const cardInfo = cardState.get();
 
   return (
     <Container className={className}>
@@ -21,11 +25,11 @@ export default function OverviewVisa(props) {
           <VisaLogo />
         </InfoSection>
         <InfoSection $align="end">
-          <div>
-            <InfoDetails>**** 8989</InfoDetails>
-            <InfoDetails className="truncate">Card User</InfoDetails>
+          <div className="info-container">
+            <InfoDetails>**** {cardInfo.id.slice(-4)}</InfoDetails>
+            <InfoDetails className="truncate card-name">{cardInfo.name}</InfoDetails>
           </div>
-          <InfoDetails>12/25</InfoDetails>
+          <InfoDetails>{cardInfo.date}</InfoDetails>
         </InfoSection>
       </CardInfo>
     </Container>

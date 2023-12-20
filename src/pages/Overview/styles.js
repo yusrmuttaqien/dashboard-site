@@ -55,6 +55,7 @@ export const Mozaic = styled.div`
   overflow: auto;
   scrollbar-width: none;
   border-radius: 16px;
+  grid-auto-rows: max-content;
 
   &::-webkit-scrollbar {
     display: none;
@@ -78,6 +79,7 @@ export const Visa = styled(OV)`
 `;
 
 export const ToDo = styled(OTD)`
+  /* NOTE: Fix for bug in Safari, minimum compromise in other browser */
   height: 250px;
   max-height: max-content;
 
@@ -93,6 +95,7 @@ export const ToDo = styled(OTD)`
 `;
 
 export const Activity = styled(OA)`
+  /* NOTE: Fix for bug in Safari, minimum compromise in other browser */
   height: 250px;
   max-height: max-content;
 

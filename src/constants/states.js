@@ -1,4 +1,6 @@
 import { SORT_OPTIONS } from '@/pages/Overview/fragments/OverviewActivity';
+import { getLocalStorage } from '@/utils/localStorage';
+import { STORAGE_USERNAME } from '@/constants/localStorage';
 
 export const STATE_DEFAULT_TODO = [
   { title: 'Buy milk', done: true, date: new Date() },
@@ -15,4 +17,10 @@ export const STATE_DEFAULT_ACTIVITIES = {
     sort: SORT_OPTIONS.DESC,
   },
   activities: [],
+};
+
+export const STATE_DEFAULT_CARD = {
+  id: '08224549',
+  name: getLocalStorage(STORAGE_USERNAME),
+  date: '12/23',
 };
