@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useHookstate } from '@hookstate/core';
 import { ACTIVITIES_STATE_PROVIDER } from '@/utils/states';
+import { syncActivitiesLocalStorage } from '@/utils/localStorage';
 import { Container, Heading, HeadingContainer, Options, ItemContainer, Item } from './styles';
 
 export const SORT_OPTIONS = {
@@ -21,9 +22,11 @@ export default function OverviewActivity(props) {
     const activities = activityState.activities.get({ noproxy: true }).reverse();
     activityState.activities.set(activities);
     activityState.config.sort.set(sort);
+    syncActivitiesLocalStorage();
   };
   const _handleClear = () => {
     activityState.activities.set([]);
+    syncActivitiesLocalStorage();
   };
 
   return (

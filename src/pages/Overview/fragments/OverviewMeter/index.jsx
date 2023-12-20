@@ -43,6 +43,7 @@ export default function OverviewMeter(props) {
 }
 
 function Meter({ height, dataset = [] }) {
+  // NOTE: Scaling (CMD + +) bug with Safari
   const theme = useTheme();
   const radius = 52;
   const circumference = 2 * Math.PI * radius;
