@@ -28,9 +28,6 @@ export const Content = styled.div`
   transition-duration: 0.1s, 0.2s;
   transition-timing-function: ease-in-out;
 
-  height: 250px;
-  max-height: max-content;
-
   @media screen and (min-width: ${({ theme }) => theme.screen.tablet.min}px) {
     left: 50%;
     right: unset;
