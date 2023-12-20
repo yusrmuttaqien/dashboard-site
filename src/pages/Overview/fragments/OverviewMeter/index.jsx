@@ -1,6 +1,8 @@
 import { useTheme } from 'styled-components';
 import { useHookstate } from '@hookstate/core';
+import useMediaQuery from '@/hooks/useMediaQuery';
 import { TODO_STATE_PROVIDER } from '@/utils/states';
+import { getScreen } from '@/styles';
 import {
   MeterBackdrop,
   MeterWrapper,
@@ -15,6 +17,7 @@ import {
 export default function OverviewMeter(props) {
   const { className } = props;
   const theme = useTheme();
+  const isTablet = useMediaQuery(`(min-width: ${getScreen('tablet-min')})`);
   const toDoState = useHookstate(TODO_STATE_PROVIDER);
   const totalTodo = toDoState.length;
   const doneTodo = toDoState.filter((todo) => todo.done.get()).length;
@@ -28,7 +31,7 @@ export default function OverviewMeter(props) {
       </Heading>
       <MeterOverview>
         <MeterView>
-          <Meter height={120} dataset={datasets} />
+          <Meter height={isTablet ? 120 : 100} dataset={datasets} />
           <Percentage>
             <h3>{todoPercentage}%</h3>
             <p>Done</p>

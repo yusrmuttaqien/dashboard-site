@@ -7,28 +7,31 @@ import Error from './Error';
 import { getLocalStorage, removeLocalStorage, updateLocalStorage } from '@/utils/localStorage';
 import { ROUTER_LOGOUT } from '@/constants/router';
 
+const _handleGate = (e) => {
+  if (!getLocalStorage('username')) {
+    throw redirect('/login');
+  }
+
+  return null;
+};
+const _handleUpdateUsername = async (e) => {
+  const username = await e.request.text();
+
+  updateLocalStorage('username', username);
+  return redirect('/');
+};
+
 const router = createBrowserRouter([
   {
     path: '/',
     element: <Main />,
     errorElement: <Error />,
-    loader: () => {
-      if (!getLocalStorage('username')) {
-        throw redirect('/login');
-      }
-
-      return null;
-    },
-    action: async (e) => {
-      const username = await e.request.text();
-
-      updateLocalStorage('username', username);
-      return redirect('/');
-    },
     children: [
       {
         path: '/',
         element: <Overview />,
+        loader: _handleGate,
+        action: _handleUpdateUsername,
       },
       {
         path: '/settings',

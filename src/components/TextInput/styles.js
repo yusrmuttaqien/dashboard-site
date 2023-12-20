@@ -14,4 +14,8 @@ export const Input = styled.input`
   &:focus {
     border: 2px solid ${({ theme }) => theme.colors.purple.active()};
   }
+
+  &:invalid {
+    border-color: red;
+  }
 `;

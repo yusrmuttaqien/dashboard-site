@@ -47,6 +47,11 @@ export const InfoSection = styled.div`
   justify-content: space-between;
   align-items: ${({ $align }) => $align || 'center'};
   gap: 16px;
+
+  .info-container {
+    min-width: 0;
+    flex: 1;
+  }
 `;
 
 export const VisaLogo = styled(V).attrs(() => ({
@@ -57,4 +62,9 @@ export const VisaLogo = styled(V).attrs(() => ({
 
 export const InfoDetails = styled.p`
   font-size: 14px;
+
+  &.card-name {
+    margin-top: 4px;
+    display: block;
+  }
 `;
