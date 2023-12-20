@@ -22,7 +22,7 @@ export default function Main() {
     <Container>
       <SideNav />
       <Outlet />
-      <SideBar $view={viewSideBar} />
+      <SideBar states={[viewSideBar, setViewSideBar]} $view={viewSideBar} />
     </Container>
   );
 }
