@@ -31,4 +31,9 @@ export const Container = styled.aside`
     cursor: pointer;
     transition: transform 0.2s ease-in-out;
   }
+
+  .bar-wrapper {
+    overflow: auto;
+    height: 100%;
+  }
 `;
