@@ -9,27 +9,31 @@ import {
   Heading,
   MeterOverview,
   Percentage,
+  MeterView,
 } from './styles';
 
-export default function OverviewMeter() {
+export default function OverviewMeter(props) {
+  const { className } = props;
   const theme = useTheme();
   const toDoState = useHookstate(TODO_STATE_PROVIDER);
   const totalTodo = toDoState.length;
   const doneTodo = toDoState.filter((todo) => todo.done.get()).length;
-  const todoPercentage = Math.round((doneTodo / totalTodo) * 100);
+  const todoPercentage = !!totalTodo ? Math.round((doneTodo / totalTodo) * 100) : 0;
   const datasets = [{ color: theme.colors.purple.active(), percentage: todoPercentage }];
 
   return (
-    <Container>
+    <Container className={className}>
       <Heading>
         <h4>Todo Meters</h4>
       </Heading>
       <MeterOverview>
-        <Meter height={80} dataset={datasets} />
-        <Percentage>
-          <h3>{todoPercentage}%</h3>
-          <p>Done</p>
-        </Percentage>
+        <MeterView>
+          <Meter height={120} dataset={datasets} />
+          <Percentage>
+            <h3>{todoPercentage}%</h3>
+            <p>Done</p>
+          </Percentage>
+        </MeterView>
       </MeterOverview>
     </Container>
   );

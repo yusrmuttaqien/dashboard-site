@@ -27,4 +27,14 @@ export const Content = styled.div`
   transition-property: opacity, transform;
   transition-duration: 0.1s, 0.2s;
   transition-timing-function: ease-in-out;
+
+  height: 250px;
+  max-height: max-content;
+
+  @media screen and (min-width: ${({ theme }) => theme.screen.tablet.min}px) {
+    left: 50%;
+    right: unset;
+    bottom: 50%;
+    transform: ${({ $stack }) => ($stack ? 'translate(-50%, 50%)' : 'translate(-50%, 100%)')};
+  }
 `;

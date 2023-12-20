@@ -4,12 +4,18 @@ export const Container = styled.section`
   background-color: ${({ theme }) => theme.colors.white.base};
   border-radius: 16px;
   padding: 16px;
+  display: flex;
+  flex-direction: column;
 `;
 
 export const Heading = styled.header`
   display: flex;
   justify-content: space-between;
   flex-direction: column;
+
+  @media screen and (min-width: ${({ theme }) => theme.screen.tablet.min}px) {
+    flex-direction: row;
+  }
 `;
 
 export const HeadingContainer = styled.div`
@@ -68,9 +74,13 @@ export const ItemContainer = styled.div`
   flex-direction: column;
   gap: 4px;
   margin-top: 12px;
-  max-height: 150px;
   overflow-y: auto;
   overscroll-behavior: contain;
+
+  &[data-stack='false'] {
+    place-content: center;
+    height: 100%;
+  }
 
   .empty-state {
     margin: 20px;

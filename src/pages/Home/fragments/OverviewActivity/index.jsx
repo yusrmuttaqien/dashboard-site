@@ -8,7 +8,8 @@ export const SORT_OPTIONS = {
   DESC: 'desc',
 };
 
-export default function OverviewActivity() {
+export default function OverviewActivity(props) {
+  const { className } = props;
   const activityState = useHookstate(ACTIVITIES_STATE_PROVIDER);
   const sort = activityState.config.sort.get();
   const totalActivities = activityState.activities.length;
@@ -26,7 +27,7 @@ export default function OverviewActivity() {
   };
 
   return (
-    <Container>
+    <Container className={className}>
       <Heading>
         <h4>Your activity</h4>
         <HeadingContainer>
@@ -55,7 +56,7 @@ export default function OverviewActivity() {
           </Options>
         </HeadingContainer>
       </Heading>
-      <ItemContainer>
+      <ItemContainer data-stack={!!totalActivities}>
         {activityState.activities.map((activity) => (
           <ActivityItem
             key={`${activity.title.get()}-${activity.date.get()}`}

@@ -4,7 +4,6 @@ import useActivities from '@/hooks/useActivities';
 import { TODO_STATE_PROVIDER } from '@/utils/states';
 import { MODAL_ADD_TODO } from '@/constants/modal';
 import CheckboxInput from '@/components/CheckboxInput';
-import Modal from '@/components/Modal';
 import {
   Container,
   HeadingContainer,
@@ -15,9 +14,11 @@ import {
   ItemContainer,
   Delete,
   TextInput,
+  Modal,
 } from './styles';
 
-export default function OverviewToDo() {
+export default function OverviewToDo(props) {
+  const { className } = props;
   const [isAddTodo, setIsAddTodo] = useState(false);
   const { addActivities } = useActivities();
   const toDoState = useHookstate(TODO_STATE_PROVIDER);
@@ -40,7 +41,7 @@ export default function OverviewToDo() {
   };
 
   return (
-    <Container>
+    <Container className={className}>
       <Heading>
         <HeadingContainer>
           <h4>What to do?</h4>{' '}
@@ -53,7 +54,7 @@ export default function OverviewToDo() {
           <p>Add</p>
         </AddContainer>
       </Heading>
-      <ItemContainer>
+      <ItemContainer data-stack={!!totalTodo}>
         {toDoState.map((todo) => (
           <ToDoItem
             key={`${todo.title.get()}-${todo.date.get()}`}

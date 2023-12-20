@@ -26,6 +26,8 @@ export const Container = styled.section`
   background-color: ${({ theme }) => theme.colors.white.base};
   border-radius: 16px;
   padding: 16px;
+  display: flex;
+  flex-direction: column;
 `;
 
 export const Heading = styled.header`
@@ -34,9 +36,15 @@ export const Heading = styled.header`
   align-items: end;
 `;
 
-export const MeterOverview = styled.div`
+export const MeterView = styled.div`
   position: relative;
-  margin-top: 12px;
+`;
+
+export const MeterOverview = styled.div`
+  margin: 12px 0;
+  height: 100%;
+  display: grid;
+  place-content: center;
 `;
 
 export const Percentage = styled.div`
@@ -46,8 +54,12 @@ export const Percentage = styled.div`
   transform: translateX(-50%);
   text-align: center;
 
+  h3 {
+    font-size: 28px;
+  }
+
   p {
-    font-size: 14px;
+    font-size: 18px;
     color: ${({ theme }) => theme.colors.black.base(0.5)};
   }
 `;

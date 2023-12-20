@@ -8,9 +8,11 @@ import {
   VisaLogo,
 } from './styles';
 
-export default function OverviewVisa() {
+export default function OverviewVisa(props) {
+  const { className } = props;
+
   return (
-    <Container>
+    <Container className={className}>
       <Logo />
       <LogoOutline />
       <CardInfo>

@@ -61,20 +61,58 @@ export const Mozaic = styled.div`
   &::-webkit-scrollbar {
     display: none;
   }
+
+  @media screen and (min-width: ${({ theme }) => theme.screen.tablet.min}px) {
+    gap: 12px;
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @media screen and (min-width: ${({ theme }) => theme.screen.desktop}px) {
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(2, max-content);
+  }
 `;
 
 export const Visa = styled(OV)`
-  grid-area: 'visa';
+  @media screen and (min-width: ${({ theme }) => theme.screen.desktop}px) {
+    grid-area: 1 / 1 / 2 / 2;
+  }
 `;
 
 export const ToDo = styled(OTD)`
-  grid-area: 'todo';
+  height: 250px;
+  max-height: max-content;
+
+  @media screen and (min-width: ${({ theme }) => theme.screen.tablet.min}px) {
+    height: 150px;
+    min-height: 100%;
+    max-height: unset;
+  }
+
+  @media screen and (min-width: ${({ theme }) => theme.screen.desktop}px) {
+    grid-area: 1 / 2 / 2 / 4;
+  }
 `;
 
 export const Activity = styled(OA)`
-  grid-area: 'activity';
+  height: 250px;
+  max-height: max-content;
+
+  @media screen and (min-width: ${({ theme }) => theme.screen.tablet.min}px) {
+    height: 150px;
+    min-height: 100%;
+    max-height: unset;
+  }
+
+  @media screen and (min-width: ${({ theme }) => theme.screen.desktop}px) {
+    grid-area: 2 / 2 / 3 / 4;
+  }
 `;
 
 export const Meter = styled(OM)`
-  grid-area: 'meter';
+  aspect-ratio: 3/2;
+
+  @media screen and (min-width: ${({ theme }) => theme.screen.desktop}px) {
+    grid-area: 2 / 1 / 3 / 2;
+  }
 `;

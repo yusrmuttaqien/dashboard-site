@@ -2,11 +2,14 @@ import styled from 'styled-components';
 import P from '@/assets/svg/Plus';
 import B from '@/assets/svg/Bin';
 import TI from '@/components/TextInput';
+import M from '@/components/Modal';
 
 export const Container = styled.section`
   background-color: ${({ theme }) => theme.colors.white.base};
   border-radius: 16px;
   padding: 16px;
+  display: flex;
+  flex-direction: column;
 `;
 
 export const Heading = styled.header`
@@ -61,9 +64,13 @@ export const ItemContainer = styled.div`
   gap: 4px;
   margin-top: 12px;
   grid-template-columns: 1fr;
-  max-height: 150px;
   overflow-y: auto;
   overscroll-behavior: contain;
+
+  &[data-stack='false'] {
+    place-content: center;
+    height: 100%;
+  }
 
   .empty-state {
     margin: 20px;
@@ -82,4 +89,14 @@ export const Delete = styled(B).attrs(() => ({
 export const TextInput = styled(TI)`
   margin-top: 12px;
   width: 100%;
+
+  @media screen and (min-width: ${({ theme }) => theme.screen.tablet.min}px) {
+    margin-top: 20px;
+  }
+`;
+
+export const Modal = styled(M)`
+  @media screen and (min-width: ${({ theme }) => theme.screen.tablet.min}px) {
+    width: 400px;
+  }
 `;
