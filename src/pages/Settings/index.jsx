@@ -80,6 +80,7 @@ function ChangeCardID() {
         minLength={8}
         maxLength={8}
         required
+        enterKeyHint="done"
       />
     </FieldWrapper>
   );
