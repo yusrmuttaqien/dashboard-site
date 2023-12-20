@@ -3,29 +3,23 @@ import { createGlobalStyle } from 'styled-components';
 const presets = {
   colors: {
     purple: {
-      base: 'rgba(248, 247, 253, 1)',
+      base: (alpha = 1) => `rgba(248, 247, 253, ${alpha})`,
       active: (alpha = 1) => `rgba(93, 105, 245, ${alpha})`,
     },
     white: {
       base: 'rgba(255, 255, 255, 1)',
     },
     black: {
-      base: 'rgba(10, 9, 22, 1)',
+      base: (alpha = 1) => `rgba(10, 9, 22, ${alpha})`,
     },
   },
   screen: {
-    mobile: '319',
+    mobile: '320',
     tablet: {
-      min: '520',
-      max: '768',
+      min: '744',
+      // max: '768',
     },
-    desktop: '1279',
-  },
-  space: {
-    x: {
-      mobile: '1.875rem',
-      desktop: '5.5rem',
-    },
+    desktop: '1280',
   },
 };
 
@@ -41,57 +35,58 @@ export const GlobalStyle = createGlobalStyle`
   font-family: 'Plus Jakarta Sans';
   margin: 0;
   padding: 0;
-
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  -webkit-text-size-adjust: 100%;
+  box-sizing: border-box;
 
   a {
-    color: ${({ theme }) => theme.colors.black.base};
+    color: ${({ theme }) => theme.colors.black.base()};
   }
 
-  /* width */
+  .truncate {
+    display: -webkit-box;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 1;
+  }
+
   &::-webkit-scrollbar {
-    width: 5px;
-    height: 5px;
+    width: 8px;
+    height: 8px;
   }
-
-  /* Track */
   &::-webkit-scrollbar-track {
     background: ${({ theme }) => theme.colors.purple.GlobalStyle};
   }
-  
-  /* Handle */
   &::-webkit-scrollbar-thumb {
-    background: ${({ theme }) => theme.colors.purple.active(0.5)};
+    background: ${({ theme }) => theme.colors.purple.active(0.3)};
+    border-radius: 4px;
+    border: 2px solid transparent;
+    background-clip: padding-box;
   }
 }
 
 html {
-  background-color: ${({ theme }) => theme.colors.purple.base};
-  color: ${({ theme }) => theme.colors.black.base};
-  font-size: calc(100vw * 16 / ${({ theme }) => theme.screen.mobile});
+  background-color: ${({ theme }) => theme.colors.purple.base()};
+  color: ${({ theme }) => theme.colors.black.base()};
   min-width: 320px;
-
+  
   body {
-    height: 100svh;
+    height: 320px;
+    min-height: 100svh;
+    position: relative;
 
-    #root, #root main {
+    #portal-root {
+      position: absolute;
+      inset: 0;
+      z-index: 999;
+      pointer-events: none;
+    }
+
+    #root, #root main, #portal-root {
       height: 100%;
     }
   }
 
   @media (prefers-color-scheme: light) {
-  }
-
-  @media screen and (min-width: ${({ theme }) => theme.screen.tablet.min}px) {
-    font-size: calc(100vw * 16 / ${({ theme }) => theme.screen.tablet.min});
-  }
-
-  @media screen and (min-width: ${({ theme }) => theme.screen.desktop}px) {
-    font-size: calc(100vw * 16 / ${({ theme }) => theme.screen.desktop});
   }
 }
 `;

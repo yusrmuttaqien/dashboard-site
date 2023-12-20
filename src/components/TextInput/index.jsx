@@ -1,9 +1,9 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Input } from './styles';
 
 export default function TextInput(props) {
-  const { id, onEnter, placeholder, disabled, className } = props;
-  const [value, setValue] = useState('');
+  const { id, onEnter, placeholder, disabled, className, value: v = '', reset } = props;
+  const [value, setValue] = useState(v);
 
   const _handleChange = (e) => {
     setValue(e.target.value);
@@ -13,6 +13,10 @@ export default function TextInput(props) {
       onEnter(value);
     }
   };
+
+  useEffect(() => {
+    setValue(v);
+  }, [reset]);
 
   return (
     <Input

@@ -1,13 +1,14 @@
 import styled from 'styled-components';
 
 export const Input = styled.input`
+  box-sizing: border-box;
   background-color: transparent;
   outline: none;
   box-shadow: none;
   border: 2px solid ${({ theme }) => theme.colors.purple.active(0.3)};
-  padding: 0.5rem;
-  font-size: 0.7rem;
-  border-radius: 0.3rem;
+  padding: 8px;
+  font-size: 12px;
+  border-radius: 16px;
   transition: border 0.2s ease-in-out;
 
   &:focus {
