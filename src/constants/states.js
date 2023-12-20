@@ -1,4 +1,4 @@
-import { SORT_OPTIONS } from '@/pages/Home/fragments/OverviewActivity';
+import { SORT_OPTIONS } from '@/pages/Overview/fragments/OverviewActivity';
 
 export const STATE_DEFAULT_TODO = [
   { title: 'Buy milk', done: true, date: new Date() },

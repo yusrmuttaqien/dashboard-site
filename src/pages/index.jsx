@@ -1,5 +1,7 @@
 import { createBrowserRouter, RouterProvider, redirect } from 'react-router-dom';
-import Home from './Home';
+import Main from '@/pagebases/Main';
+import Overview from './Overview';
+import Settings from './Settings';
 import Login from './Login';
 import Error from './Error';
 import { getLocalStorage, removeLocalStorage, updateLocalStorage } from '@/utils/localStorage';
@@ -8,7 +10,7 @@ import { ROUTER_LOGOUT } from '@/constants/router';
 const router = createBrowserRouter([
   {
     path: '/',
-    element: <Home />,
+    element: <Main />,
     errorElement: <Error />,
     loader: () => {
       if (!getLocalStorage('username')) {
@@ -23,6 +25,16 @@ const router = createBrowserRouter([
       updateLocalStorage('username', username);
       return redirect('/');
     },
+    children: [
+      {
+        path: '/',
+        element: <Overview />,
+      },
+      {
+        path: '/settings',
+        element: <Settings />,
+      },
+    ],
   },
   {
     path: '/login',

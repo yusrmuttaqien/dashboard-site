@@ -1,6 +1,6 @@
 import { useHookstate } from '@hookstate/core';
 import { ACTIVITIES_STATE_PROVIDER } from '@/utils/states';
-import { SORT_OPTIONS } from '@/pages/Home/fragments/OverviewActivity';
+import { SORT_OPTIONS } from '@/pages/Overview/fragments/OverviewActivity';
 
 export default function useActivities() {
   const activityState = useHookstate(ACTIVITIES_STATE_PROVIDER);

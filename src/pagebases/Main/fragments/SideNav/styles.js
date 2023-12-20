@@ -54,4 +54,9 @@ export const NavList = styled.svg.attrs(() => ({
     background-color: ${({ theme, $active }) =>
       $active ? theme.colors.purple.active() : theme.colors.purple.active(0.3)};
   }
+
+  &:active {
+    background-color: ${({ theme, $active }) =>
+      $active ? theme.colors.purple.active() : theme.colors.purple.active(0.5)};
+  }
 `;

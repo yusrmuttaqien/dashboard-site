@@ -1,11 +1,11 @@
 import { useState, useEffect } from 'react';
 import useMediaQuery from '@/hooks/useMediaQuery';
+import { Outlet } from 'react-router-dom';
 import SideNav from './fragments/SideNav';
-import Overview from './fragments/Overview';
 import { getScreen } from '@/styles';
-import { Main, SideBar } from './styles';
+import { Container, SideBar } from './styles';
 
-export default function Home() {
+export default function Main() {
   const [viewSideBar, setViewSideBar] = useState(false);
   const isDesktop = useMediaQuery(`(min-width: ${getScreen('desktop')})`);
 
@@ -14,10 +14,10 @@ export default function Home() {
   }, [isDesktop]);
 
   return (
-    <Main>
+    <Container>
       <SideNav />
-      <Overview />
+      <Outlet />
       <SideBar $view={viewSideBar} />
-    </Main>
+    </Container>
   );
 }

@@ -1,15 +1,13 @@
 import styled from 'styled-components';
 import M from '@/assets/svg/Magnifier';
-import OV from '../OverviewVisa';
-import OTD from '../OverviewToDo';
-import OA from '../OverviewActivity';
-import OM from '../OverviewMeter';
+import OV from './fragments/OverviewVisa';
+import OTD from './fragments/OverviewToDo';
+import OA from './fragments/OverviewActivity';
+import OM from './fragments/OverviewMeter';
 
 export const Container = styled.div`
   flex: 1;
   padding: 20px 16px;
-  height: 100%;
-  overflow: hidden;
   display: flex;
   flex-direction: column;
 `;
