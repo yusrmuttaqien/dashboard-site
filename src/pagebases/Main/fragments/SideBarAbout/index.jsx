@@ -1,10 +1,11 @@
+import Profile from 'assets/img/Profile.jpg';
 import { Container, Link } from './styles';
 
 export default function SideBarAbout() {
   return (
     <Container>
       <h4>Creator in the box</h4>
-      <img src="/src/assets/img/Profile.jpg" alt="Yusril Muttaqien" />
+      <img src={Profile} alt="Yusril Muttaqien" />
       <h5>Yusril Muttaqien</h5>
       <p>
         Hi! Yusril here, it's been a blast making this site. Solely working from singular static
