@@ -14,10 +14,9 @@ export default function SideBarAbout() {
       </p>
       <p>
         I hope whoever you are reviewing this site is hyped as I'm in the making. It isn't perfect,
-        there is a flaw here and there. But I decided to pat myself on the back for doing all of
-        these in only 2 days without any real preparation. It definitely could be better, but this
-        was a good run. Thank you for the challenge, and I hope we can meet soon following the
-        application 👋.
+        there is a flaw here and there. But I decided to pat myself on the back for doing all of the
+        planning and execution in three days. It definitely could be better, but this was a good
+        run. Thank you for the challenge, and I hope we can meet soon following the application 👋.
       </p>
       <Link href="https://www.linkedin.com/in/ydhm/" target="_blank">
         LinkedIn

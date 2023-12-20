@@ -20,6 +20,8 @@
 
 - [React Router Dom - Routing library](https://reactrouter.com)
 
+- [Hookstate - State management library](https://hookstate.js.org)
+
 <br/>
 
 ## Credits
