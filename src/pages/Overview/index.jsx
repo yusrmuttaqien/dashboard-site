@@ -17,7 +17,7 @@ export default function Overview() {
   const username = getLocalStorage(STORAGE_USERNAME);
 
   return (
-    <Container>
+    <Container className="container">
       <Header>
         <HeaderContainer>
           <Heading className="truncate" title={`Hello, ${username}`}>

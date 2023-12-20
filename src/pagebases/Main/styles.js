@@ -1,10 +1,16 @@
 import styled from 'styled-components';
 import SB from './fragments/SideBar';
 
-export const Main = styled.main`
+export const Container = styled.main`
   display: flex;
   overflow-x: hidden;
   position: relative;
+
+  .container {
+    flex: 1;
+    height: 100%;
+    overflow: hidden;
+  }
 `;
 
 export const SideBar = styled(SB)`
