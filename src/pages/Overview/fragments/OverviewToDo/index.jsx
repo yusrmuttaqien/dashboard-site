@@ -4,6 +4,7 @@ import useActivities from '@/hooks/useActivities';
 import { TODO_STATE_PROVIDER } from '@/utils/states';
 import { MODAL_ADD_TODO } from '@/constants/modal';
 import CheckboxInput from '@/components/CheckboxInput';
+import { syncToDoLocalStorage } from '@/utils/localStorage';
 import {
   Container,
   HeadingContainer,
@@ -26,18 +27,20 @@ export default function OverviewToDo(props) {
   const doneTodo = toDoState.filter((todo) => todo.done.get()).length;
 
   const _handleChange = (todo) => (isChecked) => {
+    todo.done.set(isChecked);
+    syncToDoLocalStorage();
     addActivities({
       title: `${isChecked ? 'Checked' : 'Unchecked'}: ${todo.title.get()}`,
       type: 'ToDo',
     });
-    todo.done.set(isChecked);
   };
   const _handleDelete = (todo) => () => {
+    todo.set(none);
+    syncToDoLocalStorage();
     addActivities({
       title: `Deleted: ${todo.title.get()}`,
       type: 'ToDo',
     });
-    todo.set(none);
   };
 
   return (
@@ -98,11 +101,12 @@ function AddToDo({ states }) {
 
   const _handleAdd = (v) => {
     toDoState.merge([{ title: v, done: false, date: new Date() }]);
+    syncToDoLocalStorage();
+    setIsAddTodo(false);
     addActivities({
       title: `Added: ${v}`,
       type: 'ToDo',
     });
-    setIsAddTodo(false);
   };
 
   return (

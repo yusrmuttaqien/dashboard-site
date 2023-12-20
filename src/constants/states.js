@@ -2,25 +2,29 @@ import { SORT_OPTIONS } from '@/pages/Overview/fragments/OverviewActivity';
 import { getLocalStorage } from '@/utils/localStorage';
 import { STORAGE_USERNAME } from '@/constants/localStorage';
 
-export const STATE_DEFAULT_TODO = [
+export const CARBON_STATE_DEFAULT_TODO = () => [
   { title: 'Buy milk', done: true, date: new Date() },
   {
-    title: 'Go back home, nono dont go home aowkaok',
+    title: 'Go back home',
     done: false,
     date: new Date(),
   },
   { title: 'Eat cereals', done: false, date: new Date() },
 ];
 
-export const STATE_DEFAULT_ACTIVITIES = {
+export const CARBON_STATE_DEFAULT_ACTIVITIES = () => ({
   config: {
     sort: SORT_OPTIONS.DESC,
   },
   activities: [],
-};
+});
 
-export const STATE_DEFAULT_CARD = {
+export const CARBON_STATE_DEFAULT_CARD = (username = '') => ({
   id: '08224549',
-  name: getLocalStorage(STORAGE_USERNAME),
+  name: username,
   date: '12/23',
-};
+});
+
+export const STATE_DEFAULT_TODO = [...CARBON_STATE_DEFAULT_TODO()];
+export const STATE_DEFAULT_ACTIVITIES = { ...CARBON_STATE_DEFAULT_ACTIVITIES() };
+export const STATE_DEFAULT_CARD = { ...CARBON_STATE_DEFAULT_CARD() };

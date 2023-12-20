@@ -1,8 +1,9 @@
 import { useState, useEffect } from 'react';
 import { useHookstate } from '@hookstate/core';
+import useActivities from '@/hooks/useActivities';
 import { CARD_STATE_PROVIDER } from '@/utils/states';
 import TextInput from '@/components/TextInput';
-import { getLocalStorage } from '@/utils/localStorage';
+import { getLocalStorage, syncCardLocalStorage } from '@/utils/localStorage';
 import { STORAGE_USERNAME } from '@/constants/localStorage';
 import { Container, Heading, Header, HeaderContainer, Search, FieldWrapper, Label } from './styles';
 
@@ -38,12 +39,18 @@ function ChangeCardID() {
   const [type, setType] = useState(TYPE_OPTIONS.password);
   const [isSaved, setIsSaved] = useState(false);
   const cardState = useHookstate(CARD_STATE_PROVIDER);
+  const { addActivities } = useActivities();
 
   const _handleCensor = () => {
     setType((prev) => (prev === TYPE_OPTIONS.password ? TYPE_OPTIONS.text : TYPE_OPTIONS.password));
   };
   const _handleChange = (v) => {
     cardState.id.set(v);
+    syncCardLocalStorage();
+    addActivities({
+      title: 'Changed: Visa Card ID',
+      type: 'Visa Card',
+    });
     setIsSaved(true);
   };
 
@@ -81,9 +88,15 @@ function ChangeCardID() {
 function ChangeCardName() {
   const [isSaved, setIsSaved] = useState(false);
   const cardState = useHookstate(CARD_STATE_PROVIDER);
+  const { addActivities } = useActivities();
 
   const _handleChange = (v) => {
     cardState.name.set(v);
+    syncCardLocalStorage();
+    addActivities({
+      title: 'Changed: Visa Card name',
+      type: 'Visa Card',
+    });
     setIsSaved(true);
   };
 

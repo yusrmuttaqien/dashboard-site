@@ -14,8 +14,15 @@ export default function Login() {
   return (
     <Main>
       <h1>Get inside</h1>
-      <p>Type your username below (enter to continue)</p>
-      <TextInput id="username" placeholder="Username" onEnter={_handleLogin} disabled={isLogging} />
+      <p>Type your username below (press enter to continue)</p>
+      <TextInput
+        id="username"
+        placeholder="Username min have 5 characters"
+        onEnter={_handleLogin}
+        disabled={isLogging}
+        minLength={5}
+        required
+      />
     </Main>
   );
 }
