@@ -10,6 +10,7 @@ import {
   Visa,
   ToDo,
   Activity,
+  Meter,
 } from './styles';
 
 export default function Overview() {
@@ -31,6 +32,7 @@ export default function Overview() {
       <Mozaic>
         <Visa />
         <ToDo />
+        <Meter />
         <Activity />
       </Mozaic>
     </Container>

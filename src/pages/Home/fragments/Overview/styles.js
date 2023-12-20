@@ -3,6 +3,7 @@ import M from '@/assets/svg/Magnifier';
 import OV from '../OverviewVisa';
 import OTD from '../OverviewToDo';
 import OA from '../OverviewActivity';
+import OM from '../OverviewMeter';
 
 export const Container = styled.div`
   flex: 1;
@@ -72,4 +73,8 @@ export const ToDo = styled(OTD)`
 
 export const Activity = styled(OA)`
   grid-area: 'activity';
+`;
+
+export const Meter = styled(OM)`
+  grid-area: 'meter';
 `;
