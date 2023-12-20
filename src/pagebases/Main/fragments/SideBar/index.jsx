@@ -1,5 +1,19 @@
-export default function SideBar(props) {
-  const { className } = props;
+import useMediaQuery from '@/hooks/useMediaQuery';
+import SideBarAbout from '../SideBarAbout';
+import { getScreen } from '@/styles';
+import { Container } from './styles';
 
-  return <aside className={className}>bar</aside>;
+export default function SideBar(props) {
+  const { className, states } = props;
+  const [viewSideBar, setViewSideBar] = states;
+  const isDesktop = useMediaQuery(`(min-width: ${getScreen('desktop')})`);
+
+  return (
+    <Container className={className} $desktop={isDesktop} $view={viewSideBar}>
+      <span className="handle" onClick={() => setViewSideBar((prev) => !prev)}>
+        ☞
+      </span>
+      <SideBarAbout />
+    </Container>
+  );
 }
