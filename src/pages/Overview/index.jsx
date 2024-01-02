@@ -1,5 +1,5 @@
-import { getLocalStorage } from '@/utils/localStorage';
-import { STORAGE_USERNAME } from '@/constants/localStorage';
+import { getSessionStorage } from '@/utils/storages';
+import { STORAGE_USERNAME } from '@/constants/storages';
 import {
   Container,
   Heading,
@@ -14,7 +14,7 @@ import {
 } from './styles';
 
 export default function Overview() {
-  const username = getLocalStorage(STORAGE_USERNAME);
+  const username = getSessionStorage(STORAGE_USERNAME);
 
   return (
     <Container className="container">

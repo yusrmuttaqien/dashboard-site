@@ -4,7 +4,7 @@ import useActivities from '@/hooks/useActivities';
 import { TODO_STATE_PROVIDER } from '@/utils/states';
 import { MODAL_ADD_TODO } from '@/constants/modal';
 import CheckboxInput from '@/components/CheckboxInput';
-import { syncToDoLocalStorage } from '@/utils/localStorage';
+import { syncToDoLocalStorage } from '@/utils/storages';
 import {
   Container,
   HeadingContainer,

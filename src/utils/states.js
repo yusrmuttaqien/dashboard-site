@@ -1,12 +1,12 @@
 import { hookstate } from '@hookstate/core';
-import { getLocalStorage, syncCardLocalStorage } from '@/utils/localStorage';
+import { getLocalStorage, getSessionStorage, syncCardLocalStorage } from '@/utils/storages';
 import { _addActivities } from '@/hooks/useActivities';
 import {
   STORAGE_USERNAME,
   STORAGE_ACTIVITY,
   STORAGE_CARD,
   STORAGE_TODO,
-} from '@/constants/localStorage';
+} from '@/constants/storages';
 import {
   STATE_DEFAULT_TODO,
   STATE_DEFAULT_ACTIVITIES,
@@ -37,7 +37,7 @@ export function resetStates() {
   CARD_STATE_PROVIDER.set(CARBON_STATE_DEFAULT_CARD());
 }
 export function hydrateStates(initial) {
-  const username = getLocalStorage(STORAGE_USERNAME);
+  const username = getSessionStorage(STORAGE_USERNAME);
   const activities = getLocalStorage(STORAGE_ACTIVITY) || {};
   const card = getLocalStorage(STORAGE_CARD) || {};
   const todo = getLocalStorage(STORAGE_TODO) || {};

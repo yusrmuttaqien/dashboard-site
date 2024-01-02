@@ -3,12 +3,12 @@ import { useHookstate } from '@hookstate/core';
 import useActivities from '@/hooks/useActivities';
 import { CARD_STATE_PROVIDER } from '@/utils/states';
 import TextInput from '@/components/TextInput';
-import { getLocalStorage, syncCardLocalStorage } from '@/utils/localStorage';
-import { STORAGE_USERNAME } from '@/constants/localStorage';
+import { getSessionStorage, syncCardLocalStorage } from '@/utils/storages';
+import { STORAGE_USERNAME } from '@/constants/storages';
 import { Container, Heading, Header, HeaderContainer, Search, FieldWrapper, Label } from './styles';
 
 export default function Settings() {
-  const username = getLocalStorage(STORAGE_USERNAME);
+  const username = getSessionStorage(STORAGE_USERNAME);
 
   return (
     <Container className="container">

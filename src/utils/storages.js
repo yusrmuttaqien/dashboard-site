@@ -8,7 +8,8 @@ import {
   STORAGE_USERNAME,
   STORAGE_TODO,
   STORAGE_ACTIVITY,
-} from '@/constants/localStorage';
+  STORAGE_REGISTERED_USERNAME,
+} from '@/constants/storages';
 
 export function getLocalStorage(id) {
   return JSON.parse(localStorage.getItem(id));
@@ -26,10 +27,36 @@ export function removeLocalStorage(id) {
   }
 }
 
+export function getSessionStorage(id) {
+  return JSON.parse(sessionStorage.getItem(id));
+}
+
+export function updateSessionStorage(id, value) {
+  sessionStorage.setItem(id, JSON.stringify(value));
+
+  if (id === STORAGE_USERNAME) {
+    const isExist = (getLocalStorage(STORAGE_REGISTERED_USERNAME) || []).includes(value);
+    if (isExist) return;
+
+    let registeredUsername = getLocalStorage(STORAGE_REGISTERED_USERNAME);
+    if (!registeredUsername) registeredUsername = [];
+    registeredUsername.push(value);
+    updateLocalStorage(STORAGE_REGISTERED_USERNAME, registeredUsername);
+  }
+}
+
+export function removeSessionStorage(id) {
+  if (id) {
+    sessionStorage.removeItem(id);
+  } else {
+    sessionStorage.clear();
+  }
+}
+
 export function syncCardLocalStorage() {
   const currentCard = CARD_STATE_PROVIDER.get({ noproxy: true });
   const cardLocalStorage = getLocalStorage(STORAGE_CARD);
-  const username = getLocalStorage(STORAGE_USERNAME);
+  const username = getSessionStorage(STORAGE_USERNAME);
 
   updateLocalStorage(STORAGE_CARD, { ...cardLocalStorage, [username]: currentCard });
 }
@@ -37,7 +64,7 @@ export function syncCardLocalStorage() {
 export function syncToDoLocalStorage() {
   const currentTodo = TODO_STATE_PROVIDER.get({ noproxy: true });
   const todoLocalStorage = getLocalStorage(STORAGE_TODO);
-  const username = getLocalStorage(STORAGE_USERNAME);
+  const username = getSessionStorage(STORAGE_USERNAME);
 
   updateLocalStorage(STORAGE_TODO, { ...todoLocalStorage, [username]: currentTodo });
 }
@@ -45,7 +72,7 @@ export function syncToDoLocalStorage() {
 export function syncActivitiesLocalStorage() {
   const currentActivities = ACTIVITIES_STATE_PROVIDER.get({ noproxy: true });
   const activitiesLocalStorage = getLocalStorage(STORAGE_ACTIVITY);
-  const username = getLocalStorage(STORAGE_USERNAME);
+  const username = getSessionStorage(STORAGE_USERNAME);
 
   updateLocalStorage(STORAGE_ACTIVITY, {
     ...activitiesLocalStorage,
