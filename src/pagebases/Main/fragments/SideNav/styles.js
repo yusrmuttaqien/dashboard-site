@@ -9,6 +9,20 @@ export const Nav = styled.nav`
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
+
+  .lower-menu {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+
+    img {
+      width: 32px;
+      height: 32px;
+      border-radius: 100%;
+      object-fit: cover;
+    }
+  }
 `;
 
 export const Logo = styled(L).attrs(() => ({

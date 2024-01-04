@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import Button from '@/components/Button';
-import UserPlaceholder from 'assets/img/user-profile.png';
+import UserPlaceholder from '@/assets/img/user-profile.png';
 import TextAreaInput from '@/components/TextAreaInput';
 import UserList from '@/components/UserList';
 import {

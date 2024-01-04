@@ -21,8 +21,8 @@ export const Container = styled.figure`
   p {
     font-size: 14px;
     color: ${({ theme }) => theme.colors.black.base(0.5)};
-    margin: 12px 0;
-    text-align: justify;
+    margin-top: 8px;
+    text-align: center;
   }
 
   .custom-button {
