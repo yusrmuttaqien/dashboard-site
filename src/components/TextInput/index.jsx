@@ -27,7 +27,7 @@ export default function TextInput(props) {
 
   useEffect(() => {
     setValue(v);
-  }, [reset]);
+  }, [reset, v]);
 
   return (
     <Input
@@ -39,7 +39,7 @@ export default function TextInput(props) {
       placeholder={placeholder}
       onKeyUp={_handleEnter}
       onChange={_handleChange}
-      value={value}
+      value={value || ''}
       {...rest}
     />
   );
