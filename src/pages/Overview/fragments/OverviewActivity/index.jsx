@@ -1,33 +1,10 @@
-import { useState } from 'react';
-import { useHookstate } from '@hookstate/core';
-import { ACTIVITIES_STATE_PROVIDER } from '@/utils/states';
-import { syncActivitiesLocalStorage } from '@/utils/storages';
+import useActivities from '@/hooks/useActivities';
 import { Container, Heading, HeadingContainer, Options, ItemContainer, Item } from './styles';
-
-export const SORT_OPTIONS = {
-  ASC: 'asc',
-  DESC: 'desc',
-};
 
 export default function OverviewActivity(props) {
   const { className } = props;
-  const activityState = useHookstate(ACTIVITIES_STATE_PROVIDER);
-  const sort = activityState.config.sort.get();
-  const totalActivities = activityState.activities.length;
-
-  const _handleSort = (sort) => () => {
-    const currentSort = activityState.config.sort.get();
-    if (currentSort === sort) return;
-
-    const activities = activityState.activities.get({ noproxy: true }).reverse();
-    activityState.activities.set(activities);
-    activityState.config.sort.set(sort);
-    syncActivitiesLocalStorage();
-  };
-  const _handleClear = () => {
-    activityState.activities.set([]);
-    syncActivitiesLocalStorage();
-  };
+  const { SORT_OPTIONS, sortActivities, activityCount, clearActivities, currentSort, activities } =
+    useActivities();
 
   return (
     <Container className={className}>
@@ -36,37 +13,37 @@ export default function OverviewActivity(props) {
         <HeadingContainer>
           <Options
             title="Sort from oldest to latest"
-            data-disabled={totalActivities === 0}
-            $active={sort === SORT_OPTIONS.ASC}
-            onClick={_handleSort(SORT_OPTIONS.ASC)}
+            data-disabled={activityCount === 0}
+            $active={currentSort === SORT_OPTIONS.ASC}
+            onClick={sortActivities(SORT_OPTIONS.ASC)}
           >
             oldest
           </Options>
           <Options
             title="Sort from latest to oldest"
-            data-disabled={totalActivities === 0}
-            $active={sort === SORT_OPTIONS.DESC}
-            onClick={_handleSort(SORT_OPTIONS.DESC)}
+            data-disabled={activityCount === 0}
+            $active={currentSort === SORT_OPTIONS.DESC}
+            onClick={sortActivities(SORT_OPTIONS.DESC)}
           >
             newest
           </Options>
           <Options
-            data-disabled={totalActivities === 0}
+            data-disabled={activityCount === 0}
             title="Clear activities lists"
-            onClick={_handleClear}
+            onClick={clearActivities}
           >
             clear
           </Options>
         </HeadingContainer>
       </Heading>
-      <ItemContainer data-stack={!!totalActivities}>
-        {activityState.activities.map((activity) => (
+      <ItemContainer data-stack={!!activityCount}>
+        {activities.map((activity) => (
           <ActivityItem
             key={`${activity.title.get()}-${activity.date.get()}`}
             content={activity.get()}
           />
         ))}
-        {totalActivities === 0 && <p className="empty-state">Nothing has been done!</p>}
+        {activityCount === 0 && <p className="empty-state">Nothing has been done!</p>}
       </ItemContainer>
     </Container>
   );

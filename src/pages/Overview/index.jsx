@@ -1,4 +1,4 @@
-import { getSessionStorage } from '@/utils/storages';
+import useUser from '@/hooks/useUser';
 import { STORAGE_USERNAME } from '@/constants/storages';
 import {
   Container,
@@ -15,14 +15,14 @@ import {
 } from './styles';
 
 export default function Overview() {
-  const username = getSessionStorage(STORAGE_USERNAME);
+  const userData = useUser();
 
   return (
     <Container className="container">
       <Header>
         <HeaderContainer>
-          <Heading className="truncate" title={`Hello, ${username}`}>
-            Hello, {username}
+          <Heading className="truncate" title={`Hello, ${userData.name}`}>
+            Hello, {userData.name}
           </Heading>
           <p className="truncate" title="Welcome to dashboard! Have a look around!">
             Welcome to dashboard! Have a look around!

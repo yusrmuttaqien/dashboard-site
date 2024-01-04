@@ -37,5 +37,10 @@ export const Container = styled.aside`
     display: flex;
     flex-direction: column;
     gap: 16px;
+
+    .update {
+      font-size: 12px;
+      color: ${({ theme }) => theme.colors.black.base(0.5)};
+    }
   }
 `;
