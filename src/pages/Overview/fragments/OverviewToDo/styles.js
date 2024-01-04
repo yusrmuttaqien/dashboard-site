@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-import P from '@/assets/svg/Plus';
 import B from '@/assets/svg/Bin';
 import TI from '@/components/TextInput';
 import M from '@/components/Modal';
@@ -23,32 +22,6 @@ export const HeadingContainer = styled.span`
     font-size: 14px;
   }
 `;
-
-export const AddContainer = styled.div`
-  display: flex;
-  cursor: pointer;
-  border-radius: 16px;
-  padding: 4px 10px;
-  transition: background-color 0.2s ease-in-out;
-  align-items: center;
-
-  p {
-    font-size: 14px;
-    margin-left: 4px;
-  }
-
-  &:hover {
-    background-color: ${({ theme }) => theme.colors.purple.active(0.3)};
-  }
-
-  &:active {
-    background-color: ${({ theme }) => theme.colors.purple.active(0.5)};
-  }
-`;
-
-export const Plus = styled(P).attrs(() => ({
-  width: 16,
-}))``;
 
 export const Item = styled.div`
   background-color: ${({ theme }) => theme.colors.purple.active(0.1)};

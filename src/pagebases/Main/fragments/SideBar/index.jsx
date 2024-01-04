@@ -1,5 +1,6 @@
 import useMediaQuery from '@/hooks/useMediaQuery';
 import SideBarAbout from '../SideBarAbout';
+import SideBarUser from '../SideBarUser';
 import { getScreen } from '@/styles';
 import { Container } from './styles';
 
@@ -14,6 +15,7 @@ export default function SideBar(props) {
         ☞
       </span>
       <div className="bar-wrapper">
+        <SideBarUser />
         <SideBarAbout />
       </div>
     </Container>

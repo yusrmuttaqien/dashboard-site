@@ -3,8 +3,9 @@ import styled from 'styled-components';
 export const Container = styled.button`
   display: flex;
   align-items: center;
+  justify-content: center;
   cursor: pointer;
-  background-color: ${({ theme }) => theme.colors.purple.active(0.5)};
+  background-color: ${({ theme }) => theme.colors.purple.active(0.7)};
   color: ${({ theme }) => theme.colors.white.base};
   border-radius: 8px;
   padding: 8px;
@@ -27,7 +28,7 @@ export const Container = styled.button`
   }
 
   &:disabled {
-    background-color: ${({ theme }) => theme.colors.purple.active(0.3)};
+    background-color: ${({ theme }) => theme.colors.purple.active(0.2)};
     cursor: not-allowed;
   }
 `;

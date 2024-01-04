@@ -34,5 +34,8 @@ export const Container = styled.aside`
   .bar-wrapper {
     overflow: auto;
     height: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
   }
 `;

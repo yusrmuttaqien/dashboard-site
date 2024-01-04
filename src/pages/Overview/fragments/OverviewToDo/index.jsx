@@ -4,13 +4,12 @@ import useActivities from '@/hooks/useActivities';
 import { TODO_STATE_PROVIDER } from '@/utils/states';
 import { MODAL_ADD_TODO } from '@/constants/modal';
 import CheckboxInput from '@/components/CheckboxInput';
+import Button from '@/components/Button';
 import { syncToDoLocalStorage } from '@/utils/storages';
 import {
   Container,
   HeadingContainer,
   Heading,
-  AddContainer,
-  Plus,
   Item,
   ItemContainer,
   Delete,
@@ -52,10 +51,9 @@ export default function OverviewToDo(props) {
             {doneTodo}/{totalTodo} <strong>done</strong>
           </p>
         </HeadingContainer>
-        <AddContainer onClick={() => setIsAddTodo(true)}>
-          <Plus />
-          <p>Add</p>
-        </AddContainer>
+        <Button className="custom-button" onClick={() => setIsAddTodo(true)}>
+          <p>New Todo</p>
+        </Button>
       </Heading>
       <ItemContainer data-stack={!!totalTodo}>
         {toDoState.map((todo) => (

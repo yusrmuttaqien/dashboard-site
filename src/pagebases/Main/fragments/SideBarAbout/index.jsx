@@ -1,5 +1,6 @@
+import Button from '@/components/Button';
 import Profile from 'assets/img/self-profile.jpg';
-import { Container, Link } from './styles';
+import { Container } from './styles';
 
 export default function SideBarAbout() {
   return (
@@ -18,12 +19,12 @@ export default function SideBarAbout() {
         planning and execution in three days. It definitely could be better, but this was a good
         run. Thank you for the challenge, and I hope we can meet soon following the application 👋.
       </p>
-      <Link href="https://www.linkedin.com/in/ydhm/" target="_blank">
+      <Button className="custom-button" href="https://www.linkedin.com/in/ydhm/" target="_blank">
         LinkedIn
-      </Link>
-      <Link href="https://github.com/yusrmuttaqien/dashboard-site" target="_blank">
+      </Button>
+      <Button href="https://github.com/yusrmuttaqien/dashboard-site" target="_blank">
         Project Github
-      </Link>
+      </Button>
     </Container>
   );
 }

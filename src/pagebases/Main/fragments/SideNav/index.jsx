@@ -1,4 +1,5 @@
 import { useNavigate, useSubmit, useLocation } from 'react-router-dom';
+import UserPlaceholder from '@/assets/img/user-profile.png';
 import useActivities from '@/hooks/useActivities';
 import { Nav, Logo, Exit, NavLists, NavList } from './styles';
 import { ROUTER_LOGOUT, ROUTER_PATHS } from '@/constants/router';
@@ -32,7 +33,10 @@ export default function SideNav() {
           />
         ))}
       </NavLists>
-      <Exit onClick={_handleLogout} />
+      <div className="lower-menu">
+        <img src={UserPlaceholder} alt="current user profile" />
+        <Exit onClick={_handleLogout} />
+      </div>
     </Nav>
   );
 }
