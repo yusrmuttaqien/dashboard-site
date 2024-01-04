@@ -1,11 +1,13 @@
 import { hookstate } from '@hookstate/core';
 import { getLocalStorage, getSessionStorage, syncCardLocalStorage } from '@/utils/storages';
 import { _addActivities } from '@/hooks/useActivities';
+import { _resetLogout } from '@/hooks/useStorage';
 import {
   STORAGE_USERNAME,
   STORAGE_ACTIVITY,
   STORAGE_CARD,
   STORAGE_TODO,
+  STORAGE_REGISTERED_USERNAME,
 } from '@/constants/storages';
 import {
   STATE_DEFAULT_TODO,
@@ -63,9 +65,22 @@ export function hydrateStates(initial, withListener) {
     function _handleStorageListener() {
       hydrateStates();
     }
+    function _handleFocusListener() {
+      const registeredUsers = getLocalStorage(STORAGE_REGISTERED_USERNAME);
+
+      // NOTE: if user deletion feature is available, add new checking case when user is deleted
+      if (!registeredUsers) {
+        _resetLogout();
+        window.location.href = '/login';
+      }
+    }
 
     window.addEventListener('storage', _handleStorageListener);
+    window.addEventListener('focus', _handleFocusListener);
 
-    return () => window.removeEventListener('storage', _handleStorageListener);
+    return () => {
+      window.removeEventListener('storage', _handleStorageListener);
+      window.removeEventListener('focus', _handleFocusListener);
+    };
   }
 }
