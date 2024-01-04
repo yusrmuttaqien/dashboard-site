@@ -180,7 +180,7 @@ function ControlStorage() {
       </Label>
       <div className="option-container">
         <Button onClick={_clearOut}>Reset storage & logout</Button>
-        <Button onClick={_refreshStates}>Update storage</Button>
+        <Button onClick={_refreshStates}>Sync states with storage</Button>
       </div>
     </ControlContainer>
   );

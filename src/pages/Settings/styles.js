@@ -79,5 +79,6 @@ export const ControlContainer = styled.div`
     display: flex;
     margin-top: 8px;
     gap: 8px;
+    flex-wrap: wrap;
   }
 `;
