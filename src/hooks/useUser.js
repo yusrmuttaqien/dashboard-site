@@ -16,9 +16,10 @@ export function _initiateLogin(username) {
   return redirect('/');
 }
 
-export function _initiateLogout() {
+export function _initiateLogout(cb) {
   removeSessionStorage(STORAGE_USERNAME);
   resetStates();
+  cb?.();
 }
 
 export function _defineLoginStatus() {
@@ -39,7 +40,14 @@ export default function useUser() {
 
   useEffect(() => {
     _initUserData();
-    // TODO: Add storage event listener
+
+    function _handleStorageListener(e) {
+      e.key === STORAGE_REGISTERED_USERNAME && _initUserData();
+    }
+
+    window.addEventListener('storage', _handleStorageListener);
+
+    return () => window.removeEventListener('storage', _handleStorageListener);
   }, []);
 
   return userData;
