@@ -113,7 +113,11 @@ export const BubbleContainer = styled.div`
       $isSelf ? theme.colors.white.base : theme.colors.black.base()};
     padding: 8px 12px;
     border-radius: 16px;
-    max-width: calc(100% - var(--_profile-dimension));
+    max-width: calc(90% - var(--_profile-dimension));
+
+    @media screen and (min-width: ${({ theme }) => theme.screen.desktop}px) {
+      max-width: 300px;
+    }
   }
 
   &:first-child {
