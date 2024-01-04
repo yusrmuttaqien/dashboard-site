@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useHookstate } from '@hookstate/core';
 import { ACTIVITIES_STATE_PROVIDER } from '@/utils/states';
-import { syncActivitiesLocalStorage } from '@/utils/localStorage';
+import { syncActivitiesLocalStorage } from '@/utils/storages';
 import { Container, Heading, HeadingContainer, Options, ItemContainer, Item } from './styles';
 
 export const SORT_OPTIONS = {

@@ -20,7 +20,6 @@ export const Container = styled.aside`
     left: calc(var(--_dimension) / 2 * -1);
     transform: translateY(-50%) ${({ $view }) => ($view ? 'rotate(0deg)' : 'rotate(180deg)')}
       ${({ $desktop }) => ($desktop ? 'scale(0)' : 'scale(1)')};
-    ${({ $desktop }) => console.log($desktop)};
     height: var(--_dimension);
     aspect-ratio: 1/1;
     border-radius: 100%;

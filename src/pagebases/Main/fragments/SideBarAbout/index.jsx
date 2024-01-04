@@ -1,4 +1,4 @@
-import Profile from 'assets/img/Profile.jpg';
+import Profile from 'assets/img/self-profile.jpg';
 import { Container, Link } from './styles';
 
 export default function SideBarAbout() {

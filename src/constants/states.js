@@ -1,6 +1,4 @@
 import { SORT_OPTIONS } from '@/pages/Overview/fragments/OverviewActivity';
-import { getLocalStorage } from '@/utils/localStorage';
-import { STORAGE_USERNAME } from '@/constants/localStorage';
 
 export const CARBON_STATE_DEFAULT_TODO = () => [
   { title: 'Buy milk', done: true, date: new Date() },

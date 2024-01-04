@@ -4,6 +4,7 @@ import OV from './fragments/OverviewVisa';
 import OTD from './fragments/OverviewToDo';
 import OA from './fragments/OverviewActivity';
 import OM from './fragments/OverviewMeter';
+import OC from './fragments/OverviewChats';
 
 export const Container = styled.div`
   flex: 1;
@@ -56,6 +57,12 @@ export const Mozaic = styled.div`
   scrollbar-width: none;
   border-radius: 16px;
   grid-auto-rows: max-content;
+  grid-template-areas:
+    'OV'
+    'OTD'
+    'OM'
+    'OC'
+    'OA';
 
   &::-webkit-scrollbar {
     display: none;
@@ -64,33 +71,36 @@ export const Mozaic = styled.div`
   @media screen and (min-width: ${({ theme }) => theme.screen.tablet.min}px) {
     gap: 12px;
     grid-template-columns: repeat(2, 1fr);
+    grid-template-areas:
+      'OV OTD'
+      'OM OA'
+      'OC OC';
   }
 
   @media screen and (min-width: ${({ theme }) => theme.screen.desktop}px) {
     grid-template-columns: repeat(3, 1fr);
     grid-template-rows: repeat(2, max-content);
+    grid-template-areas:
+      'OV OTD OTD'
+      'OM OA OA'
+      'OC OC OC';
   }
 `;
 
 export const Visa = styled(OV)`
-  @media screen and (min-width: ${({ theme }) => theme.screen.desktop}px) {
-    grid-area: 1 / 1 / 2 / 2;
-  }
+  grid-area: OV;
 `;
 
 export const ToDo = styled(OTD)`
   /* NOTE: Fix for bug in Safari, minimum compromise in other browser */
   height: 250px;
   max-height: max-content;
+  grid-area: OTD;
 
   @media screen and (min-width: ${({ theme }) => theme.screen.tablet.min}px) {
     height: 150px;
     min-height: 100%;
     max-height: unset;
-  }
-
-  @media screen and (min-width: ${({ theme }) => theme.screen.desktop}px) {
-    grid-area: 1 / 2 / 2 / 4;
   }
 `;
 
@@ -98,22 +108,28 @@ export const Activity = styled(OA)`
   /* NOTE: Fix for bug in Safari, minimum compromise in other browser */
   height: 250px;
   max-height: max-content;
+  grid-area: OA;
 
   @media screen and (min-width: ${({ theme }) => theme.screen.tablet.min}px) {
     height: 150px;
     min-height: 100%;
     max-height: unset;
   }
-
-  @media screen and (min-width: ${({ theme }) => theme.screen.desktop}px) {
-    grid-area: 2 / 2 / 3 / 4;
-  }
 `;
 
 export const Meter = styled(OM)`
   aspect-ratio: 3/2;
+  grid-area: OM;
+`;
 
-  @media screen and (min-width: ${({ theme }) => theme.screen.desktop}px) {
-    grid-area: 2 / 1 / 3 / 2;
+export const Chats = styled(OC)`
+  height: 600px;
+  max-height: max-content;
+  grid-area: OC;
+
+  @media screen and (min-width: ${({ theme }) => theme.screen.tablet.min}px) {
+    height: 300px;
+    min-height: 100%;
+    max-height: unset;
   }
 `;

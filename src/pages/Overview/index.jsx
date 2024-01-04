@@ -1,5 +1,5 @@
-import { getLocalStorage } from '@/utils/localStorage';
-import { STORAGE_USERNAME } from '@/constants/localStorage';
+import { getSessionStorage } from '@/utils/storages';
+import { STORAGE_USERNAME } from '@/constants/storages';
 import {
   Container,
   Heading,
@@ -11,10 +11,11 @@ import {
   ToDo,
   Activity,
   Meter,
+  Chats,
 } from './styles';
 
 export default function Overview() {
-  const username = getLocalStorage(STORAGE_USERNAME);
+  const username = getSessionStorage(STORAGE_USERNAME);
 
   return (
     <Container className="container">
@@ -23,8 +24,8 @@ export default function Overview() {
           <Heading className="truncate" title={`Hello, ${username}`}>
             Hello, {username}
           </Heading>
-          <p className="truncate" title="Have a look around! Hope you like it!">
-            Have a look around! Hope you like it!
+          <p className="truncate" title="Welcome to dashboard! Have a look around!">
+            Welcome to dashboard! Have a look around!
           </p>
         </HeaderContainer>
         <Search />
@@ -34,6 +35,7 @@ export default function Overview() {
         <ToDo />
         <Meter />
         <Activity />
+        <Chats />
       </Mozaic>
     </Container>
   );

@@ -1,6 +1,6 @@
 import { useHookstate } from '@hookstate/core';
 import { ACTIVITIES_STATE_PROVIDER } from '@/utils/states';
-import { syncActivitiesLocalStorage } from '@/utils/localStorage';
+import { syncActivitiesLocalStorage } from '@/utils/storages';
 import { SORT_OPTIONS } from '@/pages/Overview/fragments/OverviewActivity';
 
 export function _addActivities({ currentSort, activityState, title, type }) {
