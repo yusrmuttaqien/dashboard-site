@@ -57,11 +57,6 @@ export const ConversationContainer = styled.div`
     gap: 16px;
     overflow-y: auto;
     overscroll-behavior: contain;
-
-    .scroll-pit-stop {
-      height: 0;
-      margin-top: -16px;
-    }
   }
 
   @media screen and (min-width: ${({ theme }) => theme.screen.tablet.min}px) {
