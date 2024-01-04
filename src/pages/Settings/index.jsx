@@ -1,11 +1,27 @@
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useHookstate } from '@hookstate/core';
 import useActivities from '@/hooks/useActivities';
-import { CARD_STATE_PROVIDER } from '@/utils/states';
+import { CARD_STATE_PROVIDER, resetStates, hydrateStates } from '@/utils/states';
+import {
+  getSessionStorage,
+  syncCardLocalStorage,
+  removeLocalStorage,
+  removeSessionStorage,
+} from '@/utils/storages';
 import TextInput from '@/components/TextInput';
-import { getSessionStorage, syncCardLocalStorage } from '@/utils/storages';
+import Button from '@/components/Button';
 import { STORAGE_USERNAME } from '@/constants/storages';
-import { Container, Heading, Header, HeaderContainer, Search, FieldWrapper, Label } from './styles';
+import {
+  Container,
+  Heading,
+  Header,
+  HeaderContainer,
+  Search,
+  FieldWrapper,
+  Label,
+  ControlContainer,
+} from './styles';
 
 export default function Settings() {
   const username = getSessionStorage(STORAGE_USERNAME);
@@ -26,6 +42,7 @@ export default function Settings() {
       </Header>
       <ChangeCardID />
       <ChangeCardName />
+      <ControlStorage />
     </Container>
   );
 }
@@ -90,6 +107,7 @@ function ChangeCardName() {
   const [isSaved, setIsSaved] = useState(false);
   const cardState = useHookstate(CARD_STATE_PROVIDER);
   const { addActivities } = useActivities();
+  const username = getSessionStorage(STORAGE_USERNAME);
 
   const _handleChange = (v) => {
     cardState.name.set(v);
@@ -119,11 +137,51 @@ function ChangeCardName() {
       </Label>
       <TextInput
         id="card-name"
-        value={cardState.name.get()}
+        value={cardState.name.get() || username}
         onEnter={_handleChange}
         minLength={5}
         required
       />
     </FieldWrapper>
+  );
+}
+
+function ControlStorage() {
+  const [isSaved, setIsSaved] = useState(false);
+  const navigate = useNavigate();
+
+  function _clearOut() {
+    removeLocalStorage();
+    removeSessionStorage();
+    resetStates();
+    navigate('/login');
+  }
+
+  function _refreshStates() {
+    hydrateStates();
+    setIsSaved(true);
+  }
+
+  useEffect(() => {
+    if (!isSaved) return;
+
+    const timeout = setTimeout(() => setIsSaved(false), 2000);
+
+    return () => clearTimeout(timeout);
+  }, [isSaved]);
+
+  return (
+    <ControlContainer>
+      <Label htmlFor="card-name" $save={isSaved}>
+        Storage control{' '}
+        <p>
+          you can reset or refresh site storage here<span>✓</span>
+        </p>
+      </Label>
+      <div className="option-container">
+        <Button onClick={_clearOut}>Reset storage & logout</Button>
+        <Button onClick={_refreshStates}>Update storage</Button>
+      </div>
+    </ControlContainer>
   );
 }
