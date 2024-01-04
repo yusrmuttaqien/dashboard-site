@@ -15,7 +15,9 @@ export default function Main() {
   }, [isDesktop]);
 
   useEffect(() => {
-    hydrateStates();
+    const destroyStorageListener = hydrateStates(false, true);
+
+    return () => destroyStorageListener();
   }, []);
 
   return (

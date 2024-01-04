@@ -36,7 +36,7 @@ export function resetStates() {
   ACTIVITIES_STATE_PROVIDER.set(CARBON_STATE_DEFAULT_ACTIVITIES());
   CARD_STATE_PROVIDER.set(CARBON_STATE_DEFAULT_CARD());
 }
-export function hydrateStates(initial) {
+export function hydrateStates(initial, withListener) {
   const username = getSessionStorage(STORAGE_USERNAME);
   const activities = getLocalStorage(STORAGE_ACTIVITY) || {};
   const card = getLocalStorage(STORAGE_CARD) || {};
@@ -58,4 +58,14 @@ export function hydrateStates(initial) {
   }
 
   initial && activitiesIntercept();
+
+  if (withListener) {
+    function _handleStorageListener() {
+      hydrateStates();
+    }
+
+    window.addEventListener('storage', _handleStorageListener);
+
+    return () => window.removeEventListener('storage', _handleStorageListener);
+  }
 }
