@@ -4,38 +4,27 @@ import Overview from './Overview';
 import Settings from './Settings';
 import Login from './Login';
 import Error from './Error';
-import { CARD_STATE_PROVIDER, hydrateStates, resetStates } from '@/utils/states';
-import { STORAGE_USERNAME } from '@/constants/storages';
-import {
-  getLocalStorage,
-  getSessionStorage,
-  removeLocalStorage,
-  removeSessionStorage,
-  updateSessionStorage,
-} from '@/utils/storages';
 import { ROUTER_LOGOUT } from '@/constants/router';
+import { _initiateLogin, _initiateLogout, _defineLoginStatus } from '@/hooks/useUser';
 
 const _handleGateIn = (e) => {
-  if (getSessionStorage(STORAGE_USERNAME)) return null;
+  if (_defineLoginStatus()) return null;
   return redirect('/login');
 };
 const _handleGateOut = (e) => {
-  if (!getSessionStorage(STORAGE_USERNAME)) return null;
+  if (!_defineLoginStatus()) return null;
   return redirect('/');
 };
 const _handleStates = async (e) => {
   const username = await e.request.text();
 
-  updateSessionStorage(STORAGE_USERNAME, username);
-  hydrateStates(true);
-  return redirect('/');
+  return _initiateLogin(username);
 };
 const _handleLogout = async (e) => {
   const code = await e.request.text();
 
   if (code === ROUTER_LOGOUT) {
-    removeSessionStorage(STORAGE_USERNAME);
-    resetStates();
+    _initiateLogout();
   }
 
   return null;

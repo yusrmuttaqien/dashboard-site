@@ -1,17 +1,10 @@
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { useHookstate } from '@hookstate/core';
+import useUser from '@/hooks/useUser';
 import useActivities from '@/hooks/useActivities';
-import { CARD_STATE_PROVIDER, resetStates, hydrateStates } from '@/utils/states';
-import {
-  getSessionStorage,
-  syncCardLocalStorage,
-  removeLocalStorage,
-  removeSessionStorage,
-} from '@/utils/storages';
+import useVisa from '@/hooks/useVisa';
+import useStorage from '@/hooks/useStorage';
 import TextInput from '@/components/TextInput';
 import Button from '@/components/Button';
-import { STORAGE_USERNAME } from '@/constants/storages';
 import {
   Container,
   Heading,
@@ -24,15 +17,15 @@ import {
 } from './styles';
 
 export default function Settings() {
-  const username = getSessionStorage(STORAGE_USERNAME);
+  const { name } = useUser();
 
   return (
     <Container className="container">
       {' '}
       <Header>
         <HeaderContainer>
-          <Heading className="truncate" title={`This is settings, ${username}`}>
-            This is settings, {username}
+          <Heading className="truncate" title={`This is settings, ${name}`}>
+            This is settings, {name}
           </Heading>
           <p className="truncate" title="You can set few things here, try it out!">
             You can set few things here, try it out!
@@ -55,19 +48,13 @@ const TYPE_OPTIONS = {
 function ChangeCardID() {
   const [type, setType] = useState(TYPE_OPTIONS.password);
   const [isSaved, setIsSaved] = useState(false);
-  const cardState = useHookstate(CARD_STATE_PROVIDER);
-  const { addActivities } = useActivities();
+  const { changeVisaID, card_info } = useVisa();
 
   const _handleCensor = () => {
     setType((prev) => (prev === TYPE_OPTIONS.password ? TYPE_OPTIONS.text : TYPE_OPTIONS.password));
   };
   const _handleChange = (v) => {
-    cardState.id.set(v);
-    syncCardLocalStorage();
-    addActivities({
-      title: 'Changed: Visa Card ID',
-      type: 'Visa Card',
-    });
+    changeVisaID(v);
     setIsSaved(true);
   };
 
@@ -90,7 +77,7 @@ function ChangeCardID() {
       <TextInput
         id="card-id"
         type={type}
-        value={cardState.id.get()}
+        value={card_info.id.get()}
         onFocus={_handleCensor}
         onBlur={_handleCensor}
         onEnter={_handleChange}
@@ -104,18 +91,12 @@ function ChangeCardID() {
 }
 
 function ChangeCardName() {
+  const { name } = useUser();
   const [isSaved, setIsSaved] = useState(false);
-  const cardState = useHookstate(CARD_STATE_PROVIDER);
-  const { addActivities } = useActivities();
-  const username = getSessionStorage(STORAGE_USERNAME);
+  const { changeVisaName, card_info } = useVisa();
 
   const _handleChange = (v) => {
-    cardState.name.set(v);
-    syncCardLocalStorage();
-    addActivities({
-      title: 'Changed: Visa Card name',
-      type: 'Visa Card',
-    });
+    changeVisaName(v);
     setIsSaved(true);
   };
 
@@ -137,7 +118,7 @@ function ChangeCardName() {
       </Label>
       <TextInput
         id="card-name"
-        value={cardState.name.get() || username}
+        value={card_info.name.get() || name}
         onEnter={_handleChange}
         minLength={5}
         required
@@ -148,17 +129,10 @@ function ChangeCardName() {
 
 function ControlStorage() {
   const [isSaved, setIsSaved] = useState(false);
-  const navigate = useNavigate();
-
-  function _clearOut() {
-    removeLocalStorage();
-    removeSessionStorage();
-    resetStates();
-    navigate('/login');
-  }
+  const { resetLogout, syncAll } = useStorage();
 
   function _refreshStates() {
-    hydrateStates();
+    syncAll();
     setIsSaved(true);
   }
 
@@ -179,7 +153,7 @@ function ControlStorage() {
         </p>
       </Label>
       <div className="option-container">
-        <Button onClick={_clearOut}>Reset storage & logout</Button>
+        <Button onClick={resetLogout}>Reset storage & logout</Button>
         <Button onClick={_refreshStates}>Sync states with storage</Button>
       </div>
     </ControlContainer>

@@ -1,6 +1,6 @@
 import { useNavigate, useSubmit, useLocation } from 'react-router-dom';
-import UserPlaceholder from '@/assets/img/user-profile.png';
 import useActivities from '@/hooks/useActivities';
+import useUser from '@/hooks/useUser';
 import { Nav, Logo, Exit, NavLists, NavList } from './styles';
 import { ROUTER_LOGOUT, ROUTER_PATHS } from '@/constants/router';
 
@@ -9,6 +9,7 @@ export default function SideNav() {
   const submit = useSubmit();
   const location = useLocation();
   const { addActivities } = useActivities();
+  const userData = useUser();
 
   const _handleLogout = () => {
     addActivities({
@@ -34,7 +35,7 @@ export default function SideNav() {
         ))}
       </NavLists>
       <div className="lower-menu">
-        <img src={UserPlaceholder} alt="current user profile" />
+        <img src={userData.img} alt="current user profile" />
         <Exit onClick={_handleLogout} />
       </div>
     </Nav>

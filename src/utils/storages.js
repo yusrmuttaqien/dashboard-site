@@ -47,7 +47,7 @@ export function updateSessionStorage(id, value) {
 
     let registeredUsername = getLocalStorage(STORAGE_REGISTERED_USERNAME);
     if (!registeredUsername) registeredUsername = [];
-    registeredUsername.push({ id: newId, name: value });
+    registeredUsername.push({ id: newId, name: value, date_reg: new Date().toISOString() });
     updateLocalStorage(STORAGE_REGISTERED_USERNAME, registeredUsername);
   }
 }

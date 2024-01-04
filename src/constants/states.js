@@ -1,4 +1,4 @@
-import { SORT_OPTIONS } from '@/pages/Overview/fragments/OverviewActivity';
+import { ACTIVITIES_SORT_OPTIONS } from '@/constants/hooks';
 
 export const CARBON_STATE_DEFAULT_TODO = () => [
   { title: 'Buy milk', done: true, date: new Date() },
@@ -12,7 +12,7 @@ export const CARBON_STATE_DEFAULT_TODO = () => [
 
 export const CARBON_STATE_DEFAULT_ACTIVITIES = () => ({
   config: {
-    sort: SORT_OPTIONS.DESC,
+    sort: ACTIVITIES_SORT_OPTIONS.DESC,
   },
   activities: [],
 });

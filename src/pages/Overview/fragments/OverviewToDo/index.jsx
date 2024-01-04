@@ -1,11 +1,8 @@
 import { useState } from 'react';
-import { useHookstate, none } from '@hookstate/core';
-import useActivities from '@/hooks/useActivities';
-import { TODO_STATE_PROVIDER } from '@/utils/states';
+import useToDo from '@/hooks/useToDo';
 import { MODAL_ADD_TODO } from '@/constants/modal';
 import CheckboxInput from '@/components/CheckboxInput';
 import Button from '@/components/Button';
-import { syncToDoLocalStorage } from '@/utils/storages';
 import {
   Container,
   HeadingContainer,
@@ -20,27 +17,7 @@ import {
 export default function OverviewToDo(props) {
   const { className } = props;
   const [isAddTodo, setIsAddTodo] = useState(false);
-  const { addActivities } = useActivities();
-  const toDoState = useHookstate(TODO_STATE_PROVIDER);
-  const totalTodo = toDoState.length;
-  const doneTodo = toDoState.filter((todo) => todo.done.get()).length;
-
-  const _handleChange = (todo) => (isChecked) => {
-    todo.done.set(isChecked);
-    syncToDoLocalStorage();
-    addActivities({
-      title: `${isChecked ? 'Checked' : 'Unchecked'}: ${todo.title.get()}`,
-      type: 'ToDo',
-    });
-  };
-  const _handleDelete = (todo) => () => {
-    todo.set(none);
-    syncToDoLocalStorage();
-    addActivities({
-      title: `Deleted: ${todo.title.get()}`,
-      type: 'ToDo',
-    });
-  };
+  const { todos, changeTodo, deleteTodo, todoCount, completedTodo } = useToDo();
 
   return (
     <Container className={className}>
@@ -48,23 +25,23 @@ export default function OverviewToDo(props) {
         <HeadingContainer>
           <h4>What to do?</h4>{' '}
           <p>
-            {doneTodo}/{totalTodo} <strong>done</strong>
+            {completedTodo}/{todoCount} <strong>done</strong>
           </p>
         </HeadingContainer>
         <Button className="custom-button" onClick={() => setIsAddTodo(true)}>
           <p>New Todo</p>
         </Button>
       </Heading>
-      <ItemContainer data-stack={!!totalTodo}>
-        {toDoState.map((todo) => (
+      <ItemContainer data-stack={!!todoCount}>
+        {todos.map((todo) => (
           <ToDoItem
             key={`${todo.title.get()}-${todo.date.get()}`}
             content={todo.get()}
-            onChange={_handleChange(todo)}
-            onDelete={_handleDelete(todo)}
+            onChange={changeTodo(todo)}
+            onDelete={deleteTodo(todo)}
           />
         ))}
-        {totalTodo === 0 && <p className="empty-state">Nothing to do!</p>}
+        {todoCount === 0 && <p className="empty-state">Nothing to do!</p>}
       </ItemContainer>
       <AddToDo states={[isAddTodo, setIsAddTodo]} />
     </Container>
@@ -94,17 +71,11 @@ function ToDoItem({ content, onChange, onDelete }) {
 
 function AddToDo({ states }) {
   const [isAddTodo, setIsAddTodo] = states;
-  const toDoState = useHookstate(TODO_STATE_PROVIDER);
-  const { addActivities } = useActivities();
+  const { addTodo } = useToDo();
 
   const _handleAdd = (v) => {
-    toDoState.merge([{ title: v, done: false, date: new Date() }]);
-    syncToDoLocalStorage();
+    addTodo(v);
     setIsAddTodo(false);
-    addActivities({
-      title: `Added: ${v}`,
-      type: 'ToDo',
-    });
   };
 
   return (

@@ -1,10 +1,10 @@
 import { useHookstate } from '@hookstate/core';
 import { ACTIVITIES_STATE_PROVIDER } from '@/utils/states';
 import { syncActivitiesLocalStorage } from '@/utils/storages';
-import { SORT_OPTIONS } from '@/pages/Overview/fragments/OverviewActivity';
+import { ACTIVITIES_SORT_OPTIONS } from '@/constants/hooks';
 
 export function _addActivities({ currentSort, activityState, title, type }) {
-  if (currentSort === SORT_OPTIONS.ASC) {
+  if (currentSort === ACTIVITIES_SORT_OPTIONS.ASC) {
     activityState.activities.merge([{ title, type, date: new Date().toLocaleString() }]);
     return syncActivitiesLocalStorage();
   } else {
@@ -21,12 +21,33 @@ export function _addActivities({ currentSort, activityState, title, type }) {
 export default function useActivities() {
   const activityState = useHookstate(ACTIVITIES_STATE_PROVIDER);
   const currentSort = activityState.config.sort.get();
+  const activityCount = activityState.activities.length;
 
   const _handleAdd = ({ title, type }) => {
     if (!title || !type) return;
 
     _addActivities({ currentSort, activityState, title, type });
   };
+  const _handleSort = (sort) => () => {
+    if (currentSort === sort) return;
 
-  return { addActivities: _handleAdd };
+    const activities = activityState.activities.get({ noproxy: true }).reverse();
+    activityState.activities.set(activities);
+    activityState.config.sort.set(sort);
+    syncActivitiesLocalStorage();
+  };
+  const _handleClear = () => {
+    activityState.activities.set([]);
+    syncActivitiesLocalStorage();
+  };
+
+  return {
+    addActivities: _handleAdd,
+    SORT_OPTIONS: ACTIVITIES_SORT_OPTIONS,
+    sortActivities: _handleSort,
+    activityCount,
+    clearActivities: _handleClear,
+    currentSort,
+    activities: activityState.activities,
+  };
 }

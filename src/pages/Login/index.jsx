@@ -1,11 +1,11 @@
 import { useState, useEffect } from 'react';
-import { useSubmit, useRouteError } from 'react-router-dom';
-import { removeLocalStorage, removeSessionStorage } from '@/utils/storages';
-import { resetStates } from '@/utils/states';
+import { useSubmit } from 'react-router-dom';
+import useStorage from '@/hooks/useStorage';
 import { Main, TextInput } from './styles';
 
 export default function Login() {
   const submit = useSubmit();
+  const { resetLogout } = useStorage();
   const [isLogging, setisLogging] = useState(false);
   const [isSaved, setIsSaved] = useState(false);
 
@@ -15,9 +15,7 @@ export default function Login() {
   };
 
   function _clearOut() {
-    removeLocalStorage();
-    removeSessionStorage();
-    resetStates();
+    resetLogout(false);
     setIsSaved(true);
   }
 
