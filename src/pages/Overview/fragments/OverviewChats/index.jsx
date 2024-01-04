@@ -100,7 +100,7 @@ function ChatList() {
 }
 
 function ChatConversation() {
-  const scrollPitStop = useRef(null);
+  const bubbleContainer = useRef(null);
   const [scrollBehaviour, setScrollBehaviour] = useState('instant');
 
   function _defineWithImg(arr, currIdx) {
@@ -117,7 +117,10 @@ function ChatConversation() {
 
   useEffect(() => {
     // NOTE: Using useState instead useRef because buggy scroll on mount at chromium browsers
-    scrollPitStop.current.scrollIntoView({ behavior: scrollBehaviour });
+    bubbleContainer.current.scrollTo({
+      top: bubbleContainer.current.scrollHeight,
+      behavior: scrollBehaviour,
+    });
 
     if (scrollBehaviour === 'instant') setScrollBehaviour('smooth');
   }, [scrollBehaviour]);
@@ -125,7 +128,7 @@ function ChatConversation() {
   return (
     <ConversationContainer>
       <h4 title="Fernando (UI Preview)">Fernando (UI Preview)</h4>
-      <div className="bubbles-container">
+      <div className="bubbles-container" ref={bubbleContainer}>
         {DUMMY_CHAT_CONVERSATION.map((chat, idx, arr) => (
           <ChatBubble
             key={`${chat.id}-${chat.date}`}
@@ -133,7 +136,6 @@ function ChatConversation() {
             {...chat}
           />
         ))}
-        <div className="scroll-pit-stop" ref={scrollPitStop} />
       </div>
       <ChatBox />
     </ConversationContainer>
