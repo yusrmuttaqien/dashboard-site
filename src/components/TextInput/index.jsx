@@ -20,7 +20,7 @@ export default function TextInput(props) {
   };
   const _handleEnter = (e) => {
     const isValid = e.target.validity.valid;
-    if ((e?.key === 'Enter' || e?.type === 'click') && value !== '' && isValid) {
+    if ((e?.key === 'Enter' || e?.type === 'click') && value !== '' && isValid && !disabled) {
       onEnter(value);
     }
   };
