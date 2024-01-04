@@ -35,12 +35,19 @@ export function updateSessionStorage(id, value) {
   sessionStorage.setItem(id, JSON.stringify(value));
 
   if (id === STORAGE_USERNAME) {
-    const isExist = (getLocalStorage(STORAGE_REGISTERED_USERNAME) || []).includes(value);
+    const isExist = (getLocalStorage(STORAGE_REGISTERED_USERNAME) || [{ name: '' }])
+      .map((user) => user.name)
+      .includes(value);
+
     if (isExist) return;
+    let newId = (getLocalStorage(STORAGE_REGISTERED_USERNAME) || [{ id: 0 }]).map(
+      (user) => user.id
+    );
+    newId = newId[newId.length - 1] + 1;
 
     let registeredUsername = getLocalStorage(STORAGE_REGISTERED_USERNAME);
     if (!registeredUsername) registeredUsername = [];
-    registeredUsername.push(value);
+    registeredUsername.push({ id: newId, name: value });
     updateLocalStorage(STORAGE_REGISTERED_USERNAME, registeredUsername);
   }
 }

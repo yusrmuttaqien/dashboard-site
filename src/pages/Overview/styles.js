@@ -73,7 +73,7 @@ export const Mozaic = styled.div`
     grid-template-columns: repeat(2, 1fr);
     grid-template-areas:
       'OV OTD'
-      'OM OA'
+      'OA OM'
       'OC OC';
   }
 
@@ -82,7 +82,7 @@ export const Mozaic = styled.div`
     grid-template-rows: repeat(2, max-content);
     grid-template-areas:
       'OV OTD OTD'
-      'OM OA OA'
+      'OA OA OM'
       'OC OC OC';
   }
 `;

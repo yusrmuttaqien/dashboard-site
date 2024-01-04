@@ -71,3 +71,13 @@ export const Label = styled.label`
     }
   }
 `;
+
+export const ControlContainer = styled.div`
+  margin-top: 16px;
+
+  .option-container {
+    display: flex;
+    margin-top: 8px;
+    gap: 8px;
+  }
+`;
