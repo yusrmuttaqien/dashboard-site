@@ -15,21 +15,6 @@ import {
   Modal,
 } from './styles';
 
-const DUMMY_CHAT_LIST = [
-  {
-    id: '1',
-    img: UserPlaceholder,
-    name: 'Fernando',
-    info: 'Fernando: Hello there, how are you?',
-  },
-  {
-    id: '2',
-    img: UserPlaceholder,
-    name: 'Roberto',
-    info: "Me: Hey, what's up?",
-  },
-];
-
 const DUMMY_CHAT_CONVERSATION = [
   {
     id: '1',
@@ -56,9 +41,8 @@ const DUMMY_CHAT_CONVERSATION = [
   },
   {
     id: '5',
-    isSelf: true,
-    content:
-      'lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+    isSelf: false,
+    content: 'lorem ipsum dolor sit amet',
     img: UserPlaceholder,
     date: '2024-01-03T17:20:32.627Z',
   },
@@ -77,20 +61,25 @@ export default function OverviewChats(props) {
 
 function ChatList() {
   const [isNewChat, setIsNewChat] = useState(false);
+  const { chats } = useChats();
 
   return (
     <ListContainer>
       <Heading>
-        <h4 className="truncate" title="Chat Lists (UI Preview)">
-          Chat Lists (UI Preview)
+        <h4 className="truncate" title="Chat Lists">
+          Chat Lists
         </h4>
         <Button onClick={() => setIsNewChat(true)}>New Chat</Button>
       </Heading>
       <div className="item-container">
-        {DUMMY_CHAT_LIST.map((chat) => (
-          <UserList key={chat.id} content={chat} onClick={() => {}} />
+        {chats.availableChats.map(({ overview }) => (
+          <UserList
+            key={`available-chat-${overview.id.get()}`}
+            content={overview.get()}
+            onClick={() => {}}
+          />
         ))}
-        {DUMMY_CHAT_LIST.length === 0 && <p className="empty-state">No recent chat yet!</p>}
+        {chats.availableChats.length === 0 && <p className="empty-state">No recent chat yet!</p>}
       </div>
       <NewChat states={[isNewChat, setIsNewChat]} />
     </ListContainer>
@@ -129,7 +118,7 @@ function ChatConversation() {
       <div className="bubbles-container" ref={bubbleContainer}>
         {DUMMY_CHAT_CONVERSATION.map((chat, idx, arr) => (
           <ChatBubble
-            key={`${chat.id}-${chat.date}`}
+            key={`chat-bubble-${chat.id}-${chat.date}`}
             showImg={_defineWithImg(arr, idx)}
             {...chat}
           />
@@ -186,11 +175,11 @@ function NewChat({ states }) {
         <Button onClick={() => setIsHelper(true)}>Help</Button>
       </header>
       <div className="users-container">
-        {chats.possibleNewUsers.map((chat) => (
+        {chats.possibleNewUsers.map((user) => (
           <UserList
-            key={chat.id.get()}
-            content={chat.get()}
-            onClick={_handleStartChat(chat.id.get())}
+            key={`new-user-${user.id.get()}`}
+            content={user.get()}
+            onClick={_handleStartChat(user.id.get())}
           />
         ))}
         {chats.possibleNewUsers.length === 0 && (
