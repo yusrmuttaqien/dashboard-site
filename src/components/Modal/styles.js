@@ -9,7 +9,7 @@ export const Overlay = styled.div`
   transition: ${({ $stack }) =>
     $stack ? 'background-color 0.2s ease-in-out 0.15s' : 'background-color 0.2s ease-in-out'};
   overflow: hidden;
-  z-index: ${({ $stack }) => $stack};
+  z-index: ${({ $index }) => $index};
 `;
 
 export const Content = styled.div`

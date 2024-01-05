@@ -1,1 +1,3 @@
 export const MODAL_ADD_TODO = 'MODAL_ADD_TODO';
+export const MODAL_NEW_CHAT = 'MODAL_NEW_CHAT';
+export const MODAL_NEW_CHAT_HELP = 'MODAL_NEW_CHAT_HELP';

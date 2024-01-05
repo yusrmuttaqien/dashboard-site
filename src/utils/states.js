@@ -4,26 +4,31 @@ import { getLocalStorage, getSessionStorage } from '@/utils/storages';
 import { _addActivities } from '@/hooks/useActivities';
 import { _resetLogout } from '@/hooks/useStorage';
 import { _defineUserAttribute } from '@/hooks/useUser';
+import { _defineAvailableChats, _defineNewChat } from '@/hooks/useChats';
 import {
   STORAGE_USERNAME,
   STORAGE_ACTIVITY,
   STORAGE_CARD,
   STORAGE_TODO,
   STORAGE_REGISTERED_USERNAME,
+  STORAGE_CHAT,
 } from '@/constants/storages';
 import {
   STATE_DEFAULT_TODO,
   STATE_DEFAULT_ACTIVITIES,
   STATE_DEFAULT_CARD,
+  STATE_DEFAULT_CHAT,
   CARBON_STATE_DEFAULT_ACTIVITIES,
   CARBON_STATE_DEFAULT_CARD,
   CARBON_STATE_DEFAULT_TODO,
+  CARBON_STATE_DEFAULT_CHAT,
 } from '@/constants/states';
 
 export const TODO_STATE_PROVIDER = hookstate(STATE_DEFAULT_TODO);
 export const MDOAL_STACK_STATE_PROVIDER = hookstate([]);
 export const ACTIVITIES_STATE_PROVIDER = hookstate(STATE_DEFAULT_ACTIVITIES);
 export const CARD_STATE_PROVIDER = hookstate(STATE_DEFAULT_CARD);
+export const CHAT_STATE_PROVIDER = hookstate(STATE_DEFAULT_CHAT);
 
 function activitiesIntercept() {
   const currentSort = ACTIVITIES_STATE_PROVIDER.config.sort.get();
@@ -35,20 +40,30 @@ function activitiesIntercept() {
     type: 'Auth',
   });
 }
+
 export function resetStates() {
   TODO_STATE_PROVIDER.set(CARBON_STATE_DEFAULT_TODO());
   ACTIVITIES_STATE_PROVIDER.set(CARBON_STATE_DEFAULT_ACTIVITIES());
   CARD_STATE_PROVIDER.set(CARBON_STATE_DEFAULT_CARD());
+  CHAT_STATE_PROVIDER.set(CARBON_STATE_DEFAULT_CHAT());
 }
-export function hydrateStates(initial, withListener) {
+export function hydrateStates(initial, withListener, listenerEvent) {
   const { id, name } = _defineUserAttribute() || {};
-  const username = getSessionStorage(STORAGE_USERNAME);
   const activities = getLocalStorage(STORAGE_ACTIVITY) || {};
   const card = getLocalStorage(STORAGE_CARD) || {};
   const todo = getLocalStorage(STORAGE_TODO) || {};
+  const chat = getLocalStorage(STORAGE_CHAT) || [];
 
   if (activities[id]) {
     ACTIVITIES_STATE_PROVIDER.set(activities[id]);
+  }
+
+  if (chat.length !== 0) {
+    _defineAvailableChats(chat, id);
+  }
+
+  if (listenerEvent?.key === STORAGE_REGISTERED_USERNAME) {
+    _defineNewChat(CHAT_STATE_PROVIDER, id);
   }
 
   if (card[id]) {
@@ -65,8 +80,8 @@ export function hydrateStates(initial, withListener) {
   initial && activitiesIntercept();
 
   if (withListener) {
-    function _handleStorageListener() {
-      hydrateStates();
+    function _handleStorageListener(e) {
+      hydrateStates(false, false, e);
     }
     function _handleFocusListener() {
       const registeredUsers = getLocalStorage(STORAGE_REGISTERED_USERNAME);

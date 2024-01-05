@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import M from '@/components/Modal';
 
 export const Container = styled.section`
   background-color: ${({ theme }) => theme.colors.white.base};
@@ -116,7 +117,7 @@ export const BubbleContainer = styled.div`
   }
 
   &:first-child {
-    margin-top: auto;
+    margin-top: 50px;
   }
 `;
 
@@ -128,5 +129,44 @@ export const BoxContainer = styled.div`
   .custom-text-area {
     flex: 1;
     resize: none;
+  }
+`;
+
+export const Modal = styled(M)`
+  header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .users-container {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    margin-top: 12px;
+    max-height: 200px;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+
+    .empty-state {
+      margin: 20px auto;
+      text-align: center;
+    }
+  }
+
+  .guide {
+    margin-top: 12px;
+    font-size: 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+
+    span {
+      display: block;
+    }
+  }
+
+  @media screen and (min-width: ${({ theme }) => theme.screen.tablet.min}px) {
+    width: 400px;
   }
 `;
