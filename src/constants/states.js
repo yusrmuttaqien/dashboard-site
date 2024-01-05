@@ -23,6 +23,14 @@ export const CARBON_STATE_DEFAULT_CARD = (name = '') => ({
   date: '12/23',
 });
 
+export const CARBON_STATE_DEFAULT_CHAT = () => ({
+  activeChatID: null,
+  activeChat: [],
+  availableChats: [],
+  possibleNewUsers: [],
+});
+
 export const STATE_DEFAULT_TODO = [...CARBON_STATE_DEFAULT_TODO()];
 export const STATE_DEFAULT_ACTIVITIES = { ...CARBON_STATE_DEFAULT_ACTIVITIES() };
 export const STATE_DEFAULT_CARD = { ...CARBON_STATE_DEFAULT_CARD() };
+export const STATE_DEFAULT_CHAT = { ...CARBON_STATE_DEFAULT_CHAT() };

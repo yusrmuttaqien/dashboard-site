@@ -1,8 +1,10 @@
 import { useState, useEffect, useRef } from 'react';
 import Button from '@/components/Button';
+import useChats from '@/hooks/useChats';
 import UserPlaceholder from '@/assets/img/user-profile.png';
 import TextAreaInput from '@/components/TextAreaInput';
 import UserList from '@/components/UserList';
+import { MODAL_NEW_CHAT, MODAL_NEW_CHAT_HELP } from '@/constants/modal';
 import {
   Container,
   ListContainer,
@@ -10,6 +12,7 @@ import {
   Heading,
   BubbleContainer,
   BoxContainer,
+  Modal,
 } from './styles';
 
 const DUMMY_CHAT_LIST = [
@@ -30,13 +33,6 @@ const DUMMY_CHAT_LIST = [
 const DUMMY_CHAT_CONVERSATION = [
   {
     id: '1',
-    isSelf: false,
-    content: 'Hello there, how are you?',
-    img: UserPlaceholder,
-    date: '2024-01-03T17:20:31.429Z',
-  },
-  {
-    id: '2',
     isSelf: false,
     content: 'Hello there, how are you?',
     img: UserPlaceholder,
@@ -80,21 +76,23 @@ export default function OverviewChats(props) {
 }
 
 function ChatList() {
+  const [isNewChat, setIsNewChat] = useState(false);
+
   return (
     <ListContainer>
       <Heading>
         <h4 className="truncate" title="Chat Lists (UI Preview)">
           Chat Lists (UI Preview)
         </h4>
-        <Button>New Chat</Button>
+        <Button onClick={() => setIsNewChat(true)}>New Chat</Button>
       </Heading>
       <div className="item-container">
         {DUMMY_CHAT_LIST.map((chat) => (
           <UserList key={chat.id} content={chat} onClick={() => {}} />
         ))}
-
         {DUMMY_CHAT_LIST.length === 0 && <p className="empty-state">No recent chat yet!</p>}
       </div>
+      <NewChat states={[isNewChat, setIsNewChat]} />
     </ListContainer>
   );
 }
@@ -168,5 +166,55 @@ function ChatBox() {
       />
       <Button disabled={isEmpty}>Send</Button>
     </BoxContainer>
+  );
+}
+
+function NewChat({ states }) {
+  const [isNewChat, setIsNewChat] = states;
+  const [isHelper, setIsHelper] = useState(false);
+  const { chats, startChat } = useChats();
+
+  const _handleStartChat = (id) => () => {
+    startChat(id);
+    setIsNewChat(false);
+  };
+
+  return (
+    <Modal id={MODAL_NEW_CHAT} isOpen={isNewChat} onClose={() => setIsNewChat(false)}>
+      <header>
+        <h3>New Chat</h3>
+        <Button onClick={() => setIsHelper(true)}>Help</Button>
+      </header>
+      <div className="users-container">
+        {chats.possibleNewUsers.map((chat) => (
+          <UserList
+            key={chat.id.get()}
+            content={chat.get()}
+            onClick={_handleStartChat(chat.id.get())}
+          />
+        ))}
+        {chats.possibleNewUsers.length === 0 && (
+          <p className="empty-state">No user yet! See help to add user.</p>
+        )}
+      </div>
+      <NewChatHelper states={[isHelper, setIsHelper]} />
+    </Modal>
+  );
+}
+
+function NewChatHelper({ states }) {
+  const [isHelper, setIsHelper] = states;
+
+  return (
+    <Modal id={MODAL_NEW_CHAT_HELP} isOpen={isHelper} onClose={() => setIsHelper(false)}>
+      <h3>Add new user(s)</h3>
+      <p className="guide">
+        <span>
+          To add new user, you can open this site in new tab and log in with different username. New
+          user will appear in popup behind.
+        </span>
+        <span>(If you do duplicate tab, simply logout on one of the tabs)</span>
+      </p>
+    </Modal>
   );
 }

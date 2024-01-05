@@ -1,3 +1,4 @@
+import UserPlaceholder from '@/assets/img/user-profile.png';
 import { Container } from './styled';
 
 export default function UserList(props) {
@@ -5,7 +6,7 @@ export default function UserList(props) {
 
   return (
     <Container className={className} $isInteractive={!!onClick} onClick={onClick}>
-      <img src={content.img} alt={`${content.name}'s picture`} />
+      <img src={content.img || UserPlaceholder} alt={`${content.name}'s picture`} />
       <div className="info">
         <h5 className="truncate">{content.name}</h5>
         <p className="truncate">{content?.info}</p>
