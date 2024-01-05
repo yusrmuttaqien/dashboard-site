@@ -17,9 +17,9 @@ export const CARBON_STATE_DEFAULT_ACTIVITIES = () => ({
   activities: [],
 });
 
-export const CARBON_STATE_DEFAULT_CARD = (username = '') => ({
+export const CARBON_STATE_DEFAULT_CARD = (name = '') => ({
   id: '08224549',
-  name: username,
+  name,
   date: '12/23',
 });
 

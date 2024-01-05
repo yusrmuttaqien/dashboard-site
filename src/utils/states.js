@@ -1,7 +1,9 @@
 import { hookstate } from '@hookstate/core';
-import { getLocalStorage, getSessionStorage, syncCardLocalStorage } from '@/utils/storages';
+import { _syncCardLocalStorage } from '@/hooks/useVisa';
+import { getLocalStorage, getSessionStorage } from '@/utils/storages';
 import { _addActivities } from '@/hooks/useActivities';
 import { _resetLogout } from '@/hooks/useStorage';
+import { _defineUserAttribute } from '@/hooks/useUser';
 import {
   STORAGE_USERNAME,
   STORAGE_ACTIVITY,
@@ -39,24 +41,25 @@ export function resetStates() {
   CARD_STATE_PROVIDER.set(CARBON_STATE_DEFAULT_CARD());
 }
 export function hydrateStates(initial, withListener) {
+  const { id, name } = _defineUserAttribute() || {};
   const username = getSessionStorage(STORAGE_USERNAME);
   const activities = getLocalStorage(STORAGE_ACTIVITY) || {};
   const card = getLocalStorage(STORAGE_CARD) || {};
   const todo = getLocalStorage(STORAGE_TODO) || {};
 
-  if (activities[username]) {
-    ACTIVITIES_STATE_PROVIDER.set(activities[username]);
+  if (activities[id]) {
+    ACTIVITIES_STATE_PROVIDER.set(activities[id]);
   }
 
-  if (card[username]) {
-    CARD_STATE_PROVIDER.set(card[username]);
+  if (card[id]) {
+    CARD_STATE_PROVIDER.set(card[id]);
   } else {
-    CARD_STATE_PROVIDER.set({ ...CARBON_STATE_DEFAULT_CARD(username) });
-    syncCardLocalStorage();
+    CARD_STATE_PROVIDER.set({ ...CARBON_STATE_DEFAULT_CARD(name) });
+    _syncCardLocalStorage();
   }
 
-  if (todo[username]) {
-    TODO_STATE_PROVIDER.set(todo[username]);
+  if (todo[id]) {
+    TODO_STATE_PROVIDER.set(todo[id]);
   }
 
   initial && activitiesIntercept();
