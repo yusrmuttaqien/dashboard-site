@@ -16,39 +16,6 @@ import {
   Modal,
 } from './styles';
 
-const DUMMY_CHAT_CONVERSATION = [
-  {
-    id: '1',
-    isSelf: false,
-    content: 'Hello there, how are you?',
-    img: UserPlaceholder,
-    date: '2024-01-03T17:20:31.429Z',
-  },
-  {
-    id: '3',
-    isSelf: true,
-    content:
-      'lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-    img: UserPlaceholder,
-    date: '2024-01-03T17:20:32.627Z',
-  },
-  {
-    id: '4',
-    isSelf: true,
-    content:
-      'lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-    img: UserPlaceholder,
-    date: '2024-01-03T17:20:32.627Z',
-  },
-  {
-    id: '5',
-    isSelf: false,
-    content: 'lorem ipsum dolor sit amet',
-    img: UserPlaceholder,
-    date: '2024-01-03T17:20:32.627Z',
-  },
-];
-
 export default function OverviewChats(props) {
   const { className } = props;
 
@@ -233,10 +200,14 @@ function NewChatHelper({ states }) {
       <h3>Add new user(s)</h3>
       <p className="guide">
         <span>
-          To add new user, you can open this site in new tab and log in with different username. New
-          user will appear in popup behind.
+          To add new user, you can open this site in new tab but on the same browser and log in with
+          different username. New user will appear in popup behind.
         </span>
         <span>(If you do duplicate tab, simply logout on one of the tabs)</span>
+        <span>
+          (This site is utilizing SessionStorage and LocalStorage for its login session and
+          databases)
+        </span>
       </p>
     </Modal>
   );
