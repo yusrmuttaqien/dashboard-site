@@ -24,6 +24,7 @@ export const Content = styled.div`
   pointer-events: ${({ $stack }) => ($stack ? 'all' : 'none')};
   transform: ${({ $stack }) => ($stack ? 'translateY(0)' : 'translateY(100%)')};
   opacity: ${({ $stack }) => ($stack ? 1 : 0)};
+  will-change: transform;
   transition-property: opacity, transform;
   transition-duration: 0.1s, 0.2s;
   transition-timing-function: ease-in-out;
