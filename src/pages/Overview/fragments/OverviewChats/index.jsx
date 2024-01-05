@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
+import { none } from '@hookstate/core';
 import Button from '@/components/Button';
 import useChats from '@/hooks/useChats';
 import UserPlaceholder from '@/assets/img/user-profile.png';
@@ -61,7 +62,7 @@ export default function OverviewChats(props) {
 
 function ChatList() {
   const [isNewChat, setIsNewChat] = useState(false);
-  const { chats } = useChats();
+  const { chats, openChat } = useChats();
 
   return (
     <ListContainer>
@@ -72,11 +73,13 @@ function ChatList() {
         <Button onClick={() => setIsNewChat(true)}>New Chat</Button>
       </Heading>
       <div className="item-container">
-        {chats.availableChats.map(({ overview }) => (
+        {chats.availableChats.map(({ overview, id }) => (
           <UserList
+            data-active={chats.activeChatID.get() === id.get()}
+            className="custom-user-list"
             key={`available-chat-${overview.id.get()}`}
             content={overview.get()}
-            onClick={() => {}}
+            onClick={() => openChat(id.get())}
           />
         ))}
         {chats.availableChats.length === 0 && <p className="empty-state">No recent chat yet!</p>}
@@ -89,16 +92,20 @@ function ChatList() {
 function ChatConversation() {
   const bubbleContainer = useRef(null);
   const [scrollBehaviour, setScrollBehaviour] = useState('instant');
+  const { lookChat, chats, getBubbleAttrs } = useChats();
+  const isOpenChat = chats.activeChatID.get();
+  const title = isOpenChat && `Conversation with: ${lookChat.overview?.name.get()}`;
 
   function _defineWithImg(arr, currIdx) {
     const chatLength = arr.length;
-    const currentChat = arr[currIdx];
     const isFirst = currIdx === 0;
     const isLast = currIdx === chatLength - 1;
 
     if ((isFirst && isLast) || isLast) return true;
 
-    const nextChat = arr[currIdx + 1];
+    const currentChat = getBubbleAttrs(arr[currIdx].uid.get());
+    const nextChat = getBubbleAttrs(arr[currIdx + 1].uid.get());
+
     return currentChat.isSelf === nextChat.isSelf ? false : true;
   }
 
@@ -110,19 +117,22 @@ function ChatConversation() {
     });
 
     if (scrollBehaviour === 'instant') setScrollBehaviour('smooth');
-  }, [scrollBehaviour]);
+  }, [scrollBehaviour, lookChat.messages]);
 
   return (
     <ConversationContainer>
-      <h4 title="Fernando (UI Preview)">Fernando (UI Preview)</h4>
+      <h4 title={title}>{title}</h4>
       <div className="bubbles-container" ref={bubbleContainer}>
-        {DUMMY_CHAT_CONVERSATION.map((chat, idx, arr) => (
-          <ChatBubble
-            key={`chat-bubble-${chat.id}-${chat.date}`}
-            showImg={_defineWithImg(arr, idx)}
-            {...chat}
-          />
-        ))}
+        {isOpenChat &&
+          lookChat.messages.map((chat, idx, arr) => (
+            <ChatBubble
+              key={`chat-bubble-${chat.id.get()}-${chat.date.get()}`}
+              showImg={_defineWithImg(arr, idx)}
+              {...chat.get()}
+              {...getBubbleAttrs(chat.uid.get())}
+            />
+          ))}
+        {!isOpenChat && <p className="empty-state">Select conversation from aside.</p>}
       </div>
       <ChatBox />
     </ConversationContainer>
@@ -140,20 +150,44 @@ function ChatBubble({ img, content, isSelf, showImg }) {
 
 function ChatBox() {
   const [isEmpty, setIsEmpty] = useState(true);
+  const [isReset, setIsReset] = useState(new Date());
+  const reply = useRef('');
+  const { sendChat, chats, openChat, lookChat } = useChats();
 
   function _handleDisabled(value) {
+    reply.current = value;
     if (value === '') setIsEmpty(true);
     else setIsEmpty(false);
+  }
+  function _handleSend() {
+    sendChat(reply.current);
+    setIsReset(new Date());
+  }
+  function _handleEsc(e) {
+    switch (e.key) {
+      case 'Escape':
+        return openChat(none);
+      case 'Enter':
+        if (e.shiftKey) return _handleSend();
+      default:
+        return;
+    }
   }
 
   return (
     <BoxContainer>
       <TextAreaInput
+        id="chat-reply"
         className="custom-text-area"
         placeholder="Type a message..."
         onChange={_handleDisabled}
+        disabled={!chats.activeChatID.get()}
+        onKeyUp={_handleEsc}
+        reset={isReset}
       />
-      <Button disabled={isEmpty}>Send</Button>
+      <Button disabled={isEmpty} onClick={_handleSend}>
+        Send
+      </Button>
     </BoxContainer>
   );
 }

@@ -1,62 +1,44 @@
 import { useEffect } from 'react';
-import { useHookstate, none } from '@hookstate/core';
+import { useHookstate } from '@hookstate/core';
 import useActivities from '@/hooks/useActivities';
 import useUser from '@/hooks/useUser';
+import UserPlaceholder from '@/assets/img/user-profile.png';
 import { CHAT_STATE_PROVIDER } from '@/utils/states';
 import { getLocalStorage, updateLocalStorage } from '@/utils/storages';
 import { STORAGE_CHAT, STORAGE_REGISTERED_USERNAME } from '@/constants/storages';
 
-const chats = [
-  {
-    id: 1,
-    participants: [1, 2],
-    isActive: true,
-    lastUpdated: '2024-01-03T17:20:32.627Z',
-    messages: [
-      {
-        id: '1',
-        isSelf: false,
-        date: '2024-01-03T17:20:31.429Z',
-        content: 'Hello there, how are you?',
-        // img: UserPlaceholder,
-      },
-      {
-        id: '3',
-        isSelf: true,
-        date: '2024-01-03T17:20:32.627Z',
-        content:
-          'lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-        // img: UserPlaceholder,
-      },
-    ],
-  },
-];
-
-export function _defineActiveChat(source, id) {}
 export function _defineAvailableChats(source, participant) {
   let availableChats = source.filter((conversation) =>
     conversation.participants.includes(participant)
   );
   availableChats = availableChats.map((conversation) => {
-    if (conversation.overview) return conversation;
-
     let otherParticipantID = conversation.participants.filter((uid) => uid !== participant);
+    let overview;
 
-    // NOTE: Modify this branch if want work with group chat
-    if (otherParticipantID.length > 1) return;
+    if (otherParticipantID.length > 1) {
+      // NOTE: Modify this branch if want work with group chat
+      return;
+    } else {
+      let info = conversation.messages.length > 0;
 
-    otherParticipantID = otherParticipantID[0];
-    const otherParticipant = getLocalStorage(STORAGE_REGISTERED_USERNAME).find(
-      (user) => user.id === otherParticipantID
-    );
+      otherParticipantID = otherParticipantID[0];
+      const otherParticipant = getLocalStorage(STORAGE_REGISTERED_USERNAME).find(
+        (user) => user.id === otherParticipantID
+      );
 
-    return {
-      ...conversation,
-      overview: {
-        ...otherParticipant,
-        info: conversation.messages[conversation.messages.length - 1],
-      },
-    };
+      if (!info) {
+        overview = otherParticipant;
+      } else {
+        const isSelf =
+          conversation.messages[conversation.messages.length - 1].uid === participant
+            ? 'Me'
+            : otherParticipant.name;
+        info = `${isSelf}: ${conversation.messages[conversation.messages.length - 1].content}`;
+        overview = { ...otherParticipant, info };
+      }
+    }
+
+    return { ...conversation, overview };
   });
 
   CHAT_STATE_PROVIDER.availableChats.set(availableChats);
@@ -82,7 +64,7 @@ export function _defineNewChat(chatState, id) {
 
 export default function useChats() {
   const chatState = useHookstate(CHAT_STATE_PROVIDER);
-  const { id } = useUser();
+  const { id, userAttributes } = useUser();
   const { addActivities } = useActivities();
 
   const _syncToLocalStorage = (id) => {
@@ -91,6 +73,11 @@ export default function useChats() {
     let updatedConversation;
 
     if (id) {
+      const conversationIdx = conversationIDs.indexOf(id);
+      updatedConversation = [...chatLocalStorage];
+      updatedConversation[conversationIdx] = chatState.availableChats
+        .find((conversation) => conversation.id.get() === id)
+        .get({ noproxy: true });
     } else {
       const conversationCount = chatState.availableChats.length;
       updatedConversation = chatState.availableChats[conversationCount - 1].get({ noproxy: true });
@@ -104,21 +91,67 @@ export default function useChats() {
     let newChatId = (getLocalStorage(STORAGE_CHAT) || [{ id: 0 }]).map((chat) => chat.id);
     newChatId = newChatId[newChatId.length - 1] + 1;
 
-    const CHAT_INSTANCE = {
+    const CONVERSATION_INSTANCE = {
       id: newChatId,
       participants: [id, uid],
       lastUpdated: new Date().toISOString(),
       messages: [],
     };
 
-    _defineAvailableChats([...chatState.availableChats.get({ noproxy: true }), CHAT_INSTANCE], id);
-    chatState.activeChatID.set(chatInstance.id);
+    _defineAvailableChats(
+      [...chatState.availableChats.get({ noproxy: true }), CONVERSATION_INSTANCE],
+      id
+    );
+    chatState.activeChatID.set(CONVERSATION_INSTANCE.id);
     _syncToLocalStorage();
+    addActivities({
+      title: `Started: Chat with ${userAttributes(uid).name}`,
+      type: 'Chat',
+    });
+  };
+  const _openChat = (id) => {
+    chatState.activeChatID.set(id);
+  };
+  const _queryChat = () => {
+    return (
+      chatState.availableChats.find((chat) => chat.id.get() === chatState.activeChatID.get()) || {}
+    );
+  };
+  const _sendChat = (message) => {
+    const currentConversation = _queryChat();
+
+    const CHAT_INSTANCE = {
+      id: currentConversation.messages.length + 1,
+      uid: id,
+      date: new Date().toISOString(),
+      content: message,
+    };
+
+    currentConversation.lastUpdated.set(CHAT_INSTANCE.date);
+    currentConversation.messages.merge([CHAT_INSTANCE]);
+    _syncToLocalStorage(currentConversation.id.get());
+    _defineAvailableChats(chatState.availableChats.get({ noproxy: true }), id);
+    addActivities({
+      title: `Sent: Chat to ${currentConversation.overview.get().name}`,
+      type: 'Chat',
+    });
+  };
+  const _getBubbleAttrs = (uid) => {
+    const { img } = userAttributes(uid);
+
+    return { img: img || UserPlaceholder, isSelf: uid === id };
   };
 
   useEffect(() => {
     _defineNewChat(chatState, id);
   }, [chatState.availableChats, id]);
 
-  return { chats: chatState, startChat: _startChat };
+  return {
+    chats: chatState,
+    startChat: _startChat,
+    openChat: _openChat,
+    lookChat: _queryChat(),
+    sendChat: _sendChat,
+    getBubbleAttrs: _getBubbleAttrs,
+  };
 }

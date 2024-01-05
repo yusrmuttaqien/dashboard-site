@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { TextArea } from './styles';
 
 export default function TextAreaInput(props) {
-  const { id, onChange, placeholder, disabled, className, value: v = '', reset, ...rest } = props;
+  const { id, onChange, placeholder, className, value: v = '', reset, ...rest } = props;
   const [value, setValue] = useState(v);
 
   const _handleChange = (e) => {
@@ -10,10 +10,14 @@ export default function TextAreaInput(props) {
     onChange?.(e.target.value);
   };
 
+  useEffect(() => {
+    setValue(v);
+    onChange?.(v);
+  }, [reset, v]);
+
   return (
     <TextArea
       className={className}
-      disabled={disabled}
       name={`${id}-name`}
       id={id}
       placeholder={placeholder}

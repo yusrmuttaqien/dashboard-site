@@ -25,7 +25,6 @@ export const CARBON_STATE_DEFAULT_CARD = (name = '') => ({
 
 export const CARBON_STATE_DEFAULT_CHAT = () => ({
   activeChatID: null,
-  activeChat: [],
   availableChats: [],
   possibleNewUsers: [],
 });

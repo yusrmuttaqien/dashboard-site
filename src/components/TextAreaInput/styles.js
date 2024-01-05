@@ -18,4 +18,8 @@ export const TextArea = styled.textarea`
   &:invalid {
     border-color: red;
   }
+
+  &:disabled {
+    cursor: no-drop;
+  }
 `;
