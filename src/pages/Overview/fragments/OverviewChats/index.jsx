@@ -2,10 +2,12 @@ import { useState, useEffect, useRef } from 'react';
 import { none } from '@hookstate/core';
 import Button from '@/components/Button';
 import useChats from '@/hooks/useChats';
+import useMediaQuery from '@/hooks/useMediaQuery';
 import UserPlaceholder from '@/assets/img/user-profile.png';
 import TextAreaInput from '@/components/TextAreaInput';
 import UserList from '@/components/UserList';
 import { MODAL_NEW_CHAT, MODAL_NEW_CHAT_HELP } from '@/constants/modal';
+import { getScreen } from '@/styles';
 import {
   Container,
   ListContainer,
@@ -60,6 +62,7 @@ function ChatConversation() {
   const bubbleContainer = useRef(null);
   const [scrollBehaviour, setScrollBehaviour] = useState('instant');
   const { lookChat, chats, getBubbleAttrs } = useChats();
+  const isTablet = useMediaQuery(`(min-width: ${getScreen('tablet-min')})`);
   const isOpenChat = chats.activeChatID.get();
   const title = isOpenChat && `Conversation with: ${lookChat.overview?.name.get()}`;
 
@@ -99,7 +102,9 @@ function ChatConversation() {
               {...getBubbleAttrs(chat.uid.get())}
             />
           ))}
-        {!isOpenChat && <p className="empty-state">Select conversation from aside.</p>}
+        {!isOpenChat && (
+          <p className="empty-state">Select conversation from {isTablet ? 'aside' : 'atop'}.</p>
+        )}
       </div>
       <ChatBox />
     </ConversationContainer>
