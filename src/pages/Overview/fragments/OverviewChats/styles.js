@@ -35,6 +35,14 @@ export const ListContainer = styled.div`
       margin: auto;
       text-align: center;
     }
+
+    .custom-user-list {
+      &[data-active='true'] {
+        color: ${({ theme }) => theme.colors.white.base};
+        background-color: ${({ theme }) => theme.colors.purple.active()};
+        cursor: default;
+      }
+    }
   }
 
   @media screen and (min-width: ${({ theme }) => theme.screen.tablet.min}px) {
@@ -58,6 +66,11 @@ export const ConversationContainer = styled.div`
     gap: 16px;
     overflow-y: auto;
     overscroll-behavior: contain;
+
+    .empty-state {
+      margin: auto;
+      text-align: center;
+    }
   }
 
   @media screen and (min-width: ${({ theme }) => theme.screen.tablet.min}px) {
@@ -110,6 +123,7 @@ export const BubbleContainer = styled.div`
     padding: 8px 12px;
     border-radius: 16px;
     max-width: calc(90% - var(--_profile-dimension));
+    white-space: pre-wrap;
 
     @media screen and (min-width: ${({ theme }) => theme.screen.desktop}px) {
       max-width: 300px;

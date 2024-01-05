@@ -26,10 +26,12 @@ export function _defineLoginStatus() {
   return getSessionStorage(STORAGE_USERNAME);
 }
 
-export function _defineUserAttribute() {
+export function _defineUserAttribute(id) {
   const activeUser = getSessionStorage(STORAGE_USERNAME);
 
-  return getLocalStorage(STORAGE_REGISTERED_USERNAME).find((user) => user.name === activeUser);
+  return getLocalStorage(STORAGE_REGISTERED_USERNAME).find((user) =>
+    id ? user.id === id : user.name === activeUser
+  );
 }
 
 export default function useUser() {
@@ -53,5 +55,5 @@ export default function useUser() {
     return () => window.removeEventListener('storage', _handleStorageListener);
   }, []);
 
-  return userData;
+  return { ...userData, userAttributes: _defineUserAttribute };
 }
