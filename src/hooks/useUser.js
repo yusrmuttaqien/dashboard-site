@@ -26,16 +26,19 @@ export function _defineLoginStatus() {
   return getSessionStorage(STORAGE_USERNAME);
 }
 
-export default function useUser() {
+export function _defineUserAttribute() {
   const activeUser = getSessionStorage(STORAGE_USERNAME);
+
+  return getLocalStorage(STORAGE_REGISTERED_USERNAME).find((user) => user.name === activeUser);
+}
+
+export default function useUser() {
   const [userData, setUserData] = useState({ name: null, id: 0, date: null, img: null });
 
   function _initUserData() {
-    const { id, date_reg, img } = getLocalStorage(STORAGE_REGISTERED_USERNAME).find(
-      (user) => user.name === activeUser
-    );
+    const { id, date_reg, img, name } = _defineUserAttribute() || {};
 
-    setUserData({ name: activeUser, id, date: date_reg, img: img || UserPlaceholder });
+    setUserData({ name, id, date: date_reg, img: img || UserPlaceholder });
   }
 
   useEffect(() => {

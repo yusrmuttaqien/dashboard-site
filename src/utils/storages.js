@@ -59,30 +59,3 @@ export function removeSessionStorage(id) {
     sessionStorage.clear();
   }
 }
-
-export function syncCardLocalStorage() {
-  const currentCard = CARD_STATE_PROVIDER.get({ noproxy: true });
-  const cardLocalStorage = getLocalStorage(STORAGE_CARD);
-  const username = getSessionStorage(STORAGE_USERNAME);
-
-  updateLocalStorage(STORAGE_CARD, { ...cardLocalStorage, [username]: currentCard });
-}
-
-export function syncToDoLocalStorage() {
-  const currentTodo = TODO_STATE_PROVIDER.get({ noproxy: true });
-  const todoLocalStorage = getLocalStorage(STORAGE_TODO);
-  const username = getSessionStorage(STORAGE_USERNAME);
-
-  updateLocalStorage(STORAGE_TODO, { ...todoLocalStorage, [username]: currentTodo });
-}
-
-export function syncActivitiesLocalStorage() {
-  const currentActivities = ACTIVITIES_STATE_PROVIDER.get({ noproxy: true });
-  const activitiesLocalStorage = getLocalStorage(STORAGE_ACTIVITY);
-  const username = getSessionStorage(STORAGE_USERNAME);
-
-  updateLocalStorage(STORAGE_ACTIVITY, {
-    ...activitiesLocalStorage,
-    [username]: currentActivities,
-  });
-}
