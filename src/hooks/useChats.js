@@ -33,9 +33,31 @@ const chats = [
 ];
 
 export function _defineActiveChat(source, id) {}
-
 export function _defineAvailableChats(source, participant) {
-  let availableChats = source.filter((chat) => chat.participants.includes(participant));
+  let availableChats = source.filter((conversation) =>
+    conversation.participants.includes(participant)
+  );
+  availableChats = availableChats.map((conversation) => {
+    if (conversation.overview) return conversation;
+
+    let otherParticipantID = conversation.participants.filter((uid) => uid !== participant);
+
+    // NOTE: Modify this branch if want work with group chat
+    if (otherParticipantID.length > 1) return;
+
+    otherParticipantID = otherParticipantID[0];
+    const otherParticipant = getLocalStorage(STORAGE_REGISTERED_USERNAME).find(
+      (user) => user.id === otherParticipantID
+    );
+
+    return {
+      ...conversation,
+      overview: {
+        ...otherParticipant,
+        info: conversation.messages[conversation.messages.length - 1],
+      },
+    };
+  });
 
   CHAT_STATE_PROVIDER.availableChats.set(availableChats);
 }
@@ -51,7 +73,7 @@ export function _defineNewChat(chatState, id) {
       prev.push(...curr.participants.get());
       return prev;
     }, []);
-    newUsers = newUsers.filter((uid) => !registeredUsersID.includes(uid));
+    newUsers = registeredUsersID.filter((uid) => !newUsers.includes(uid));
     newUsers = newUsers.map((uid) => registeredUsers.find((user) => user.id === uid));
   }
 
@@ -60,17 +82,39 @@ export function _defineNewChat(chatState, id) {
 
 export default function useChats() {
   const chatState = useHookstate(CHAT_STATE_PROVIDER);
-  const chatLocalStorage = getLocalStorage(STORAGE_CHAT);
   const { id } = useUser();
   const { addActivities } = useActivities();
 
-  const _syncToLocalStorage = () => {
-    updateLocalStorage(STORAGE_CHAT, {
-      ...chatLocalStorage,
-      [id]: chatState.get({ noproxy: true }),
-    });
+  const _syncToLocalStorage = (id) => {
+    const chatLocalStorage = getLocalStorage(STORAGE_CHAT) || [];
+    const conversationIDs = chatLocalStorage.map((conversation) => conversation.id);
+    let updatedConversation;
+
+    if (id) {
+    } else {
+      const conversationCount = chatState.availableChats.length;
+      updatedConversation = chatState.availableChats[conversationCount - 1].get({ noproxy: true });
+      updatedConversation = [...chatLocalStorage, updatedConversation];
+    }
+
+    updatedConversation = updatedConversation.map(({ overview: _, ...rest }) => rest);
+    updateLocalStorage(STORAGE_CHAT, updatedConversation);
   };
-  const _startChat = (id) => {};
+  const _startChat = (uid) => {
+    let newChatId = (getLocalStorage(STORAGE_CHAT) || [{ id: 0 }]).map((chat) => chat.id);
+    newChatId = newChatId[newChatId.length - 1] + 1;
+
+    const CHAT_INSTANCE = {
+      id: newChatId,
+      participants: [id, uid],
+      lastUpdated: new Date().toISOString(),
+      messages: [],
+    };
+
+    _defineAvailableChats([...chatState.availableChats.get({ noproxy: true }), CHAT_INSTANCE], id);
+    chatState.activeChatID.set(chatInstance.id);
+    _syncToLocalStorage();
+  };
 
   useEffect(() => {
     _defineNewChat(chatState, id);
