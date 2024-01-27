@@ -25,6 +25,11 @@ function ConfirmDelete({ states }) {
   const { deleteAccount } = useUser();
   const [isDeleteAccount, setIsDeleteAccount] = states;
 
+  const _handleDeleteAccount = () => {
+    setIsDeleteAccount(false);
+    deleteAccount();
+  };
+
   return (
     <Modal
       id={MODAL_DELETE_ACCOUNT}
@@ -32,7 +37,7 @@ function ConfirmDelete({ states }) {
       onClose={() => setIsDeleteAccount(false)}
     >
       <h3>Are you sure want to delete your account?</h3>
-      <Button className="custom-button" onClick={deleteAccount}>
+      <Button className="custom-button" onClick={_handleDeleteAccount}>
         Yes, delete my account
       </Button>
     </Modal>
