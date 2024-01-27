@@ -41,7 +41,7 @@ export default function Cropper(props) {
     );
 
     const blob = await offscreen.convertToBlob({
-      type: 'image/png',
+      type: 'image/jpeg',
       quality: 0.1,
     });
     const base64 = await _blobToBase64(blob);
