@@ -15,7 +15,7 @@ export default function SideBar(props) {
         ☞
       </span>
       <div className="bar-wrapper">
-        <p className="update">Code updated at: 2024-01-05T23:30WIB</p>
+        <p className="update">Code updated at: 27/01/2024 12:38</p>
         <SideBarUser />
         <SideBarAbout />
       </div>

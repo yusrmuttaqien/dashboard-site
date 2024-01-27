@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { useHookstate } from '@hookstate/core';
 import useActivities from '@/hooks/useActivities';
 import useUser, { _defineUserAttribute } from '@/hooks/useUser';
@@ -15,14 +16,15 @@ export function _syncCardLocalStorage() {
 
 export default function useVisa() {
   const cardState = useHookstate(CARD_STATE_PROVIDER);
-  const cardLocalStorage = getLocalStorage(STORAGE_CARD);
-  const { id } = useUser();
+  const { user, isLoggedIn } = useUser();
   const { addActivities } = useActivities();
 
   const _syncToLocalStorage = () => {
+    const cardLocalStorage = getLocalStorage(STORAGE_CARD);
+
     updateLocalStorage(STORAGE_CARD, {
       ...cardLocalStorage,
-      [id]: cardState.get({ noproxy: true }),
+      [user.id.get()]: cardState.get({ noproxy: true }),
     });
   };
   const _handleChangeID = (v) => {
@@ -33,14 +35,21 @@ export default function useVisa() {
       type: 'Visa Card',
     });
   };
-  const _handleChangeName = (v) => {
+  const _handleChangeName = (v, mute) => {
     cardState.name.set(v);
     _syncToLocalStorage();
-    addActivities({
-      title: 'Changed: Visa Card name',
-      type: 'Visa Card',
-    });
+    !mute &&
+      addActivities({
+        title: 'Changed: Visa Card name',
+        type: 'Visa Card',
+      });
   };
+
+  useEffect(() => {
+    if (!cardState.name.get() && isLoggedIn) {
+      _handleChangeName(user.name.get(), true);
+    }
+  }, [cardState]);
 
   return { card_info: cardState, changeVisaID: _handleChangeID, changeVisaName: _handleChangeName };
 }

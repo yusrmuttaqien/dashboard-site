@@ -6,6 +6,10 @@ export const Container = styled.div`
   padding: 20px 16px;
   display: flex;
   flex-direction: column;
+
+  &.container {
+    overflow: auto;
+  }
 `;
 
 export const Heading = styled.h2`

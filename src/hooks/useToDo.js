@@ -7,16 +7,17 @@ import { STORAGE_TODO } from '@/constants/storages';
 
 export default function useToDo() {
   const toDoState = useHookstate(TODO_STATE_PROVIDER);
-  const todoLocalStorage = getLocalStorage(STORAGE_TODO);
-  const { id } = useUser();
+  const { user } = useUser();
   const { addActivities } = useActivities();
   const todoCount = toDoState.length;
   const completedTodo = toDoState.filter((todo) => todo.done.get()).length;
 
   const _syncToLocalStorage = () => {
+    const todoLocalStorage = getLocalStorage(STORAGE_TODO);
+
     updateLocalStorage(STORAGE_TODO, {
       ...todoLocalStorage,
-      [id]: toDoState.get({ noproxy: true }),
+      [user.id.get()]: toDoState.get({ noproxy: true }),
     });
   };
   const _handleChange = (todo) => (isChecked) => {

@@ -58,6 +58,12 @@ export const ConversationContainer = styled.div`
   height: 60%;
   border-top: 3px solid ${({ theme }) => theme.colors.black.base(0.05)};
 
+  .bubbles-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
   .bubbles-container {
     flex: 1;
     margin: 18px 0;
@@ -177,6 +183,16 @@ export const Modal = styled(M)`
 
     span {
       display: block;
+
+      &.bq {
+        font-style: italic;
+        background-color: ${({ theme }) => theme.colors.black.base(0.05)};
+        width: max-content;
+        padding: 4px;
+        border-radius: 4px;
+        display: inline-block;
+        font-weight: 600;
+      }
     }
   }
 

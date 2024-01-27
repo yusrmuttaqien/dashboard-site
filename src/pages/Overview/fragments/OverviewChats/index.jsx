@@ -3,10 +3,10 @@ import { none } from '@hookstate/core';
 import Button from '@/components/Button';
 import useChats from '@/hooks/useChats';
 import useMediaQuery from '@/hooks/useMediaQuery';
-import UserPlaceholder from '@/assets/img/user-profile.png';
 import TextAreaInput from '@/components/TextAreaInput';
 import UserList from '@/components/UserList';
-import { MODAL_NEW_CHAT, MODAL_NEW_CHAT_HELP } from '@/constants/modal';
+import { MODAL_CHATBOX_TIPS, MODAL_NEW_CHAT, MODAL_NEW_CHAT_HELP } from '@/constants/modal';
+import { CHAT_DELETED_USER } from '@/constants/hooks';
 import { getScreen } from '@/styles';
 import {
   Container,
@@ -61,6 +61,7 @@ function ChatList() {
 function ChatConversation() {
   const bubbleContainer = useRef(null);
   const [scrollBehaviour, setScrollBehaviour] = useState('instant');
+  const [isTips, setIsTips] = useState(false);
   const { lookChat, chats, getBubbleAttrs } = useChats();
   const isTablet = useMediaQuery(`(min-width: ${getScreen('tablet-min')})`);
   const isOpenChat = chats.activeChatID.get();
@@ -91,7 +92,10 @@ function ChatConversation() {
 
   return (
     <ConversationContainer>
-      <h4 title={title}>{title}</h4>
+      <div className="bubbles-header">
+        <h4 title={title}>{title}</h4>
+        <Button onClick={() => setIsTips(true)}>ChatBox Tips</Button>
+      </div>
       <div className="bubbles-container" ref={bubbleContainer}>
         {isOpenChat &&
           lookChat.messages.map((chat, idx, arr) => (
@@ -107,6 +111,7 @@ function ChatConversation() {
         )}
       </div>
       <ChatBox />
+      <ChatBoxTips states={[isTips, setIsTips]} />
     </ConversationContainer>
   );
 }
@@ -125,6 +130,10 @@ function ChatBox() {
   const [isReset, setIsReset] = useState(new Date());
   const reply = useRef('');
   const { sendChat, chats, openChat, lookChat } = useChats();
+  const isReplyable =
+    chats.availableChats
+      .find(({ id }) => id.get() === chats.activeChatID.get())
+      ?.overview.name.get() !== CHAT_DELETED_USER;
 
   function _handleDisabled(value) {
     reply.current = value;
@@ -153,7 +162,7 @@ function ChatBox() {
         className="custom-text-area"
         placeholder="Type a message..."
         onChange={_handleDisabled}
-        disabled={!chats.activeChatID.get()}
+        disabled={!chats.activeChatID.get() || !isReplyable}
         onKeyUp={_handleEsc}
         reset={isReset}
       />
@@ -189,7 +198,7 @@ function NewChat({ states }) {
           />
         ))}
         {chats.possibleNewUsers.length === 0 && (
-          <p className="empty-state">No user yet! See help to add user.</p>
+          <p className="empty-state">No new user yet! See help to know how add user.</p>
         )}
       </div>
       <NewChatHelper states={[isHelper, setIsHelper]} />
@@ -206,12 +215,34 @@ function NewChatHelper({ states }) {
       <p className="guide">
         <span>
           To add new user, you can open this site in new tab but on the same browser and log in with
-          different username. New user will appear in popup behind.
+          different username. New user will appear in the popup behind.
         </span>
-        <span>(If you do duplicate tab, simply logout on one of the tabs)</span>
+        <span>(If you do duplicate tab, make sure you properly logged out on the new tab)</span>
         <span>
-          (This site is utilizing SessionStorage and LocalStorage for its login session and
-          databases)
+          (This app is utilizing SessionStorage and LocalStorage for its login session and
+          databases, <strong>security is not the main concern here</strong>)
+        </span>
+      </p>
+    </Modal>
+  );
+}
+
+function ChatBoxTips({ states }) {
+  const [isTips, setIsTips] = states;
+
+  return (
+    <Modal id={MODAL_CHATBOX_TIPS} isOpen={isTips} onClose={() => setIsTips(false)}>
+      <h3>ChatBox Tips!</h3>
+      <p className="guide">
+        <span>
+          You can immidiate send chat by pressing <span className="bq">Shift + Enter</span>
+        </span>
+        <span>
+          <span className="bq">Enter</span> is by default reserved for multiline chat
+        </span>
+        <span>
+          When ChatBox is in focus, you can close current conversaton by pressing{' '}
+          <span className="bq">Esc</span>
         </span>
       </p>
     </Modal>
