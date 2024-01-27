@@ -40,6 +40,8 @@ function _defineNewUser(name) {
   let newId = Object.keys(getLocalStorage(STORAGE_REGISTERED_USERNAME) || { 0: 0 }).map((id) =>
     parseInt(id)
   );
+
+  if (newId.length === 0) newId = [0];
   newId = Math.max(...newId) + 1;
 
   let registeredUsername = getLocalStorage(STORAGE_REGISTERED_USERNAME);

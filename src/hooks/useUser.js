@@ -84,7 +84,7 @@ export default function useUser() {
   }
   function _deleteAccount() {
     const regUsrLocalStorage = getLocalStorage(STORAGE_REGISTERED_USERNAME);
-    const toDoLocalStorage = getLocalStorage(STORAGE_TODO);
+    const toDoLocalStorage = getLocalStorage(STORAGE_TODO) || {};
     const cardLocalStorage = getLocalStorage(STORAGE_CARD);
     const activityLocalStorage = getLocalStorage(STORAGE_ACTIVITY);
     const currentId = activeUserState.id.get();
@@ -93,7 +93,7 @@ export default function useUser() {
     navigate('/login');
 
     regUsrLocalStorage && delete regUsrLocalStorage[currentId];
-    toDoLocalStorage && delete toDoLocalStorage[currentId];
+    toDoLocalStorage[currentId] && delete toDoLocalStorage[currentId];
     cardLocalStorage && delete cardLocalStorage[currentId];
     activityLocalStorage && delete activityLocalStorage[currentId];
     updateLocalStorage(STORAGE_REGISTERED_USERNAME, regUsrLocalStorage);
