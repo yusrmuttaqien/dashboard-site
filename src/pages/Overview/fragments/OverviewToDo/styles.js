@@ -2,6 +2,8 @@ import styled from 'styled-components';
 import B from '@/assets/svg/Bin';
 import TI from '@/components/TextInput';
 import M from '@/components/Modal';
+import N from '@/assets/svg/Note';
+import TA from '@/components/TextAreaInput';
 
 export const Container = styled.section`
   background-color: ${({ theme }) => theme.colors.white.base};
@@ -30,6 +32,12 @@ export const Item = styled.div`
   display: flex;
   justify-content: space-between;
   gap: 8px;
+
+  .spacer {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+  }
 `;
 
 export const ItemContainer = styled.div`
@@ -55,8 +63,22 @@ export const Delete = styled(B).attrs(() => ({
   width: 16,
 }))`
   color: red;
-  flex-shrink: 0;
   cursor: pointer;
+`;
+
+export const Note = styled(N).attrs(() => ({
+  width: 16,
+}))`
+  color: ${({ theme }) => theme.colors.black.base()};
+
+  &:not(.indicator) {
+    cursor: pointer;
+  }
+
+  &.indicator {
+    color: ${({ theme }) => theme.colors.black.base(0.3)};
+    flex-shrink: 0;
+  }
 `;
 
 export const TextInput = styled(TI)`
@@ -68,7 +90,17 @@ export const TextInput = styled(TI)`
   }
 `;
 
+export const TextAreaInput = styled(TA)`
+  margin-block: 8px;
+  width: 100%;
+  resize: vertical;
+`;
+
 export const Modal = styled(M)`
+  .custom-edit-button {
+    width: 100%;
+  }
+
   @media screen and (min-width: ${({ theme }) => theme.screen.tablet.min}px) {
     width: 400px;
   }

@@ -11,17 +11,23 @@ export default function TextInput(props) {
     value: v = '',
     reset,
     type = 'text',
+    onChange,
     ...rest
   } = props;
   const [value, setValue] = useState(v);
 
   const _handleChange = (e) => {
+    const isValid = e.target.validity.valid;
+
     setValue(e.target.value);
+    if (value !== '' && isValid && !disabled) {
+      onChange?.(e.target.value);
+    }
   };
   const _handleEnter = (e) => {
     const isValid = e.target.validity.valid;
     if ((e?.key === 'Enter' || e?.type === 'click') && value !== '' && isValid && !disabled) {
-      onEnter(value);
+      onEnter?.(value);
     }
   };
 
@@ -31,6 +37,7 @@ export default function TextInput(props) {
 
   return (
     <Input
+      {...rest}
       className={className}
       disabled={disabled}
       type={type}
@@ -40,7 +47,6 @@ export default function TextInput(props) {
       onKeyUp={_handleEnter}
       onChange={_handleChange}
       value={value || ''}
-      {...rest}
     />
   );
 }
