@@ -15,7 +15,7 @@ const _handleGateOut = (e) => {
   if (!_defineLoginStatus()) return null;
   return redirect('/');
 };
-const _handleStates = async (e) => {
+const _handleLogin = async (e) => {
   const username = await e.request.text();
 
   return _initiateLogin(username);
@@ -40,7 +40,7 @@ const router = createBrowserRouter([
         path: '/',
         element: <Overview />,
         loader: _handleGateIn,
-        action: _handleStates,
+        action: _handleLogin,
       },
       {
         path: '/settings',

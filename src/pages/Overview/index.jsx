@@ -1,5 +1,4 @@
 import useUser from '@/hooks/useUser';
-import { STORAGE_USERNAME } from '@/constants/storages';
 import {
   Container,
   Heading,
@@ -15,14 +14,14 @@ import {
 } from './styles';
 
 export default function Overview() {
-  const userData = useUser();
+  const { user } = useUser();
 
   return (
     <Container className="container">
       <Header>
         <HeaderContainer>
-          <Heading className="truncate" title={`Hello, ${userData.name}`}>
-            Hello, {userData.name}
+          <Heading className="truncate" title={`Hello, ${user.name.get()}`}>
+            Hello, {user.name.get()}
           </Heading>
           <p className="truncate" title="Welcome to dashboard! Have a look around!">
             Welcome to dashboard! Have a look around!

@@ -5,11 +5,12 @@ import {
 } from '@/utils/states';
 import {
   STORAGE_CARD,
-  STORAGE_USERNAME,
+  STORAGE_ID,
   STORAGE_TODO,
   STORAGE_ACTIVITY,
   STORAGE_REGISTERED_USERNAME,
 } from '@/constants/storages';
+import { CARBON_STATE_DEFAULT_ACTIVE_USERNAME } from '@/constants/states';
 
 export function getLocalStorage(id) {
   return JSON.parse(localStorage.getItem(id));
@@ -17,6 +18,10 @@ export function getLocalStorage(id) {
 
 export function updateLocalStorage(id, value) {
   localStorage.setItem(id, JSON.stringify(value));
+}
+
+function setSessionStorage(id, value) {
+  sessionStorage.setItem(id, JSON.stringify(value));
 }
 
 export function removeLocalStorage(id) {
@@ -31,29 +36,43 @@ export function getSessionStorage(id) {
   return JSON.parse(sessionStorage.getItem(id));
 }
 
+function _defineNewUser(name) {
+  let newId = Object.keys(getLocalStorage(STORAGE_REGISTERED_USERNAME) || { 0: 0 }).map((id) =>
+    parseInt(id)
+  );
+
+  if (newId.length === 0) newId = [0];
+  newId = Math.max(...newId) + 1;
+
+  let registeredUsername = getLocalStorage(STORAGE_REGISTERED_USERNAME);
+  if (!registeredUsername) registeredUsername = {};
+  registeredUsername[newId] = CARBON_STATE_DEFAULT_ACTIVE_USERNAME({
+    id: newId,
+    name: name,
+    date: new Date().toISOString(),
+    img: null,
+  });
+  updateLocalStorage(STORAGE_REGISTERED_USERNAME, registeredUsername);
+  setSessionStorage(STORAGE_ID, newId);
+}
+
 export function updateSessionStorage(id, value) {
-  sessionStorage.setItem(id, JSON.stringify(value));
+  switch (id) {
+    case STORAGE_ID:
+      const users = Object.values(
+        getLocalStorage(STORAGE_REGISTERED_USERNAME) || { 0: { name: '' } }
+      );
 
-  if (id === STORAGE_USERNAME) {
-    const isExist = (getLocalStorage(STORAGE_REGISTERED_USERNAME) || [{ name: '' }])
-      .map((user) => user.name)
-      .includes(value);
+      if (users.map((user) => user.name).includes(value)) {
+        const loggingId = users.reduce((str, curr) => (curr.name === value ? curr.id : str), 0);
+        setSessionStorage(STORAGE_ID, loggingId);
+        break;
+      }
 
-    if (isExist) return;
-    let newId = (getLocalStorage(STORAGE_REGISTERED_USERNAME) || [{ id: 0 }]).map(
-      (user) => user.id
-    );
-    newId = newId[newId.length - 1] + 1;
-
-    let registeredUsername = getLocalStorage(STORAGE_REGISTERED_USERNAME);
-    if (!registeredUsername) registeredUsername = [];
-    registeredUsername.push({
-      id: newId,
-      name: value,
-      date_reg: new Date().toISOString(),
-      img: null,
-    });
-    updateLocalStorage(STORAGE_REGISTERED_USERNAME, registeredUsername);
+      _defineNewUser(value);
+      break;
+    default:
+      break;
   }
 }
 

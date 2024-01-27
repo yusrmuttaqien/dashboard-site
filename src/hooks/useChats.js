@@ -6,6 +6,7 @@ import UserPlaceholder from '@/assets/img/user-profile.png';
 import { CHAT_STATE_PROVIDER } from '@/utils/states';
 import { getLocalStorage, updateLocalStorage } from '@/utils/storages';
 import { STORAGE_CHAT, STORAGE_REGISTERED_USERNAME } from '@/constants/storages';
+import { CHAT_DELETED_USER } from '@/constants/hooks';
 
 export function _defineAvailableChats(source, participant) {
   let availableChats = source.filter((conversation) =>
@@ -22,9 +23,10 @@ export function _defineAvailableChats(source, participant) {
       let info = conversation.messages.length > 0;
 
       otherParticipantID = otherParticipantID[0];
-      const otherParticipant = getLocalStorage(STORAGE_REGISTERED_USERNAME).find(
-        (user) => user.id === otherParticipantID
-      );
+      const otherParticipant = getLocalStorage(STORAGE_REGISTERED_USERNAME)[otherParticipantID] || {
+        name: CHAT_DELETED_USER,
+        img: UserPlaceholder,
+      };
 
       if (!info) {
         overview = otherParticipant;
@@ -34,7 +36,10 @@ export function _defineAvailableChats(source, participant) {
             ? 'Me'
             : otherParticipant.name;
         info = `${isSelf}: ${conversation.messages[conversation.messages.length - 1].content}`;
-        overview = { ...otherParticipant, info };
+        overview = {
+          ...otherParticipant,
+          info,
+        };
       }
     }
 
@@ -45,18 +50,18 @@ export function _defineAvailableChats(source, participant) {
 }
 export function _defineNewChat(chatState, id) {
   const registeredUsers = getLocalStorage(STORAGE_REGISTERED_USERNAME);
-  const registeredUsersID = getLocalStorage(STORAGE_REGISTERED_USERNAME).map((user) => user.id);
+  const registeredUsersId = Object.keys(getLocalStorage(STORAGE_REGISTERED_USERNAME));
   let newUsers = chatState.availableChats.length;
 
   if (newUsers === 0) {
-    newUsers = registeredUsers.filter((user) => user.id !== id);
+    newUsers = Object.values(registeredUsers).filter((user) => user.id !== id);
   } else {
     newUsers = chatState.availableChats.reduce((prev, curr) => {
       prev.push(...curr.participants.get());
       return prev;
     }, []);
-    newUsers = registeredUsersID.filter((uid) => !newUsers.includes(uid));
-    newUsers = newUsers.map((uid) => registeredUsers.find((user) => user.id === uid));
+    newUsers = registeredUsersId.filter((uid) => !newUsers.includes(parseInt(uid)));
+    newUsers = newUsers.map((uid) => registeredUsers[uid]);
   }
 
   chatState.possibleNewUsers.set(newUsers);
@@ -64,7 +69,7 @@ export function _defineNewChat(chatState, id) {
 
 export default function useChats() {
   const chatState = useHookstate(CHAT_STATE_PROVIDER);
-  const { id, userAttributes } = useUser();
+  const { userAttributes, user } = useUser();
   const { addActivities } = useActivities();
 
   const _syncToLocalStorage = (id) => {
@@ -93,14 +98,14 @@ export default function useChats() {
 
     const CONVERSATION_INSTANCE = {
       id: newChatId,
-      participants: [id, uid],
+      participants: [user.id.get(), uid],
       lastUpdated: new Date().toISOString(),
       messages: [],
     };
 
     _defineAvailableChats(
       [...chatState.availableChats.get({ noproxy: true }), CONVERSATION_INSTANCE],
-      id
+      user.id.get()
     );
     chatState.activeChatID.set(CONVERSATION_INSTANCE.id);
     _syncToLocalStorage();
@@ -122,7 +127,7 @@ export default function useChats() {
 
     const CHAT_INSTANCE = {
       id: currentConversation.messages.length + 1,
-      uid: id,
+      uid: user.id.get(),
       date: new Date().toISOString(),
       content: message,
     };
@@ -130,21 +135,21 @@ export default function useChats() {
     currentConversation.lastUpdated.set(CHAT_INSTANCE.date);
     currentConversation.messages.merge([CHAT_INSTANCE]);
     _syncToLocalStorage(currentConversation.id.get());
-    _defineAvailableChats(chatState.availableChats.get({ noproxy: true }), id);
+    _defineAvailableChats(chatState.availableChats.get({ noproxy: true }), user.id.get());
     addActivities({
       title: `Sent: Chat to ${currentConversation.overview.get().name}`,
       type: 'Chat',
     });
   };
   const _getBubbleAttrs = (uid) => {
-    const { img } = userAttributes(uid);
+    const { img } = userAttributes(uid) || { img: UserPlaceholder };
 
-    return { img: img || UserPlaceholder, isSelf: uid === id };
+    return { img: img, isSelf: uid === user.id.get() };
   };
 
   useEffect(() => {
-    _defineNewChat(chatState, id);
-  }, [chatState.availableChats, id]);
+    _defineNewChat(chatState, user.id.get());
+  }, [chatState.availableChats, user.id.get()]);
 
   return {
     chats: chatState,

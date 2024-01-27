@@ -9,7 +9,7 @@ export default function SideNav() {
   const submit = useSubmit();
   const location = useLocation();
   const { addActivities } = useActivities();
-  const userData = useUser();
+  const { user } = useUser();
 
   const _handleLogout = () => {
     addActivities({
@@ -35,7 +35,7 @@ export default function SideNav() {
         ))}
       </NavLists>
       <div className="lower-menu">
-        <img src={userData.img} alt="current user profile" />
+        <img src={user.img.get()} alt="current user profile" />
         <Exit onClick={_handleLogout} />
       </div>
     </Nav>

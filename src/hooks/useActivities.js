@@ -29,16 +29,17 @@ export function _addActivities({ currentSort, activityState, title, type }) {
 }
 
 export default function useActivities() {
-  const { id } = useUser();
+  const { user } = useUser();
   const activityState = useHookstate(ACTIVITIES_STATE_PROVIDER);
-  const activityLocalStorage = getLocalStorage(STORAGE_ACTIVITY);
   const currentSort = activityState.config.sort.get();
   const activityCount = activityState.activities.length;
 
   const _syncToLocalStorage = () => {
+    const activityLocalStorage = getLocalStorage(STORAGE_ACTIVITY);
+
     updateLocalStorage(STORAGE_ACTIVITY, {
       ...activityLocalStorage,
-      [id]: activityState.get({ noproxy: true }),
+      [user.id.get()]: activityState.get({ noproxy: true }),
     });
   };
   const _handleAdd = ({ title, type }) => {
