@@ -5,11 +5,16 @@ import { FieldWrapper, Label } from '../../styles';
 
 export default function ChangeName() {
   const [isSaved, setIsSaved] = useState(false);
+  const [isError, setIsError] = useState(false);
   const { changeName, user } = useUser();
 
   const _handleChange = (v) => {
-    changeName(v);
-    setIsSaved(true);
+    try {
+      changeName(v);
+      setIsSaved(true);
+    } catch (e) {
+      setIsError(e.message.toLowerCase());
+    }
   };
 
   useEffect(() => {
@@ -19,13 +24,22 @@ export default function ChangeName() {
 
     return () => clearTimeout(timeout);
   }, [isSaved]);
+  useEffect(() => {
+    if (!isError) return;
+
+    const timeout = setTimeout(() => setIsError(false), 2000);
+
+    return () => clearTimeout(timeout);
+  }, [isError]);
 
   return (
     <FieldWrapper>
-      <Label htmlFor="user-name" $save={isSaved}>
+      <Label htmlFor="user-name" $save={isSaved} $error={isError}>
         Your Name{' '}
         <p>
-          min 5 char, press enter to save<span>✓</span>
+          {isError || 'min 5 char, press enter to save'}
+          <span>✓</span>
+          <span className="error-indicator">✕</span>
         </p>
       </Label>
       <TextInput

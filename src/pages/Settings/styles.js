@@ -66,12 +66,20 @@ export const Label = styled.label`
   p {
     font-weight: 400;
     font-size: 14px;
+    position: relative;
 
     span {
       color: green;
       opacity: ${({ $save }) => ($save ? 1 : 0)};
+      position: ${({ $save }) => ($save ? 'relative' : 'absolute')};
       transition: opacity 0.2s ease-in-out;
       margin-left: 4px;
+
+      &.error-indicator {
+        color: red;
+        opacity: ${({ $error }) => ($error ? 1 : 0)};
+        position: ${({ $error }) => ($error ? 'relative' : 'absolute')};
+      }
     }
   }
 `;

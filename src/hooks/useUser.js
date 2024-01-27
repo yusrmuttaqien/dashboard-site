@@ -61,6 +61,10 @@ export default function useUser() {
     });
   }
   function _handleChangeName(name) {
+    const regUsrLocalStorage = getLocalStorage(STORAGE_REGISTERED_USERNAME);
+    const isExist = Object.values(regUsrLocalStorage).find((usr) => usr.name === name);
+
+    if (isExist) throw new Error('Username already exist');
     const prevName = activeUserState.name.get();
 
     activeUserState.name.set(name);
