@@ -2,12 +2,16 @@ import { useState, useEffect } from 'react';
 import { TextArea } from './styles';
 
 export default function TextAreaInput(props) {
-  const { id, onChange, placeholder, className, value: v = '', reset, ...rest } = props;
+  const { id, onChange, placeholder, className, value: v = '', reset, disabled, ...rest } = props;
   const [value, setValue] = useState(v);
 
   const _handleChange = (e) => {
+    const isValid = e.target.validity.valid;
+
     setValue(e.target.value);
-    onChange?.(e.target.value);
+    if (value !== '' && isValid && !disabled) {
+      onChange?.(e.target.value);
+    }
   };
 
   useEffect(() => {
@@ -18,6 +22,7 @@ export default function TextAreaInput(props) {
   return (
     <TextArea
       className={className}
+      disabled={disabled}
       name={`${id}-name`}
       id={id}
       placeholder={placeholder}

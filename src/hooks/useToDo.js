@@ -44,11 +44,34 @@ export default function useToDo() {
       type: 'ToDo',
     });
   };
+  const _handleUpdate = (todo) => (title, notes) => {
+    const prevTitle = todo.title.get();
+
+    title && todo.title.set(title);
+    notes && todo.notes.set(notes);
+    _syncToLocalStorage();
+
+    function _defineActivityTitle(todo, title, notes, prevTitle) {
+      if (title && notes) {
+        return `Updated: ${prevTitle} to ${title} and it's notes`;
+      } else if (title) {
+        return `Updated: ${prevTitle} to ${title}`;
+      } else {
+        return `Updated: ${todo.title.get()}'s notes`;
+      }
+    }
+
+    addActivities({
+      title: _defineActivityTitle(todo, title, notes, prevTitle),
+      type: 'ToDo',
+    });
+  };
 
   return {
     changeTodo: _handleChange,
     deleteTodo: _handleDelete,
     addTodo: _handleAdd,
+    updateTodo: _handleUpdate,
     todos: toDoState,
     todoCount,
     completedTodo,

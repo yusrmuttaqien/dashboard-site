@@ -198,7 +198,7 @@ function NewChat({ states }) {
           />
         ))}
         {chats.possibleNewUsers.length === 0 && (
-          <p className="empty-state">No new user yet! See help to know how add user.</p>
+          <p className="empty-state">No new user yet! See "Help" to know how to add new user.</p>
         )}
       </div>
       <NewChatHelper states={[isHelper, setIsHelper]} />
@@ -235,7 +235,7 @@ function ChatBoxTips({ states }) {
       <h3>ChatBox Tips!</h3>
       <p className="guide">
         <span>
-          You can immidiate send chat by pressing <span className="bq">Shift + Enter</span>
+          You can immidiate send a chat by pressing <span className="bq">Shift + Enter</span>
         </span>
         <span>
           <span className="bq">Enter</span> is by default reserved for multiline chat

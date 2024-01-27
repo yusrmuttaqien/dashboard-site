@@ -4,7 +4,7 @@ export const Container = styled.div`
   width: 100%;
   aspect-ratio: 3/1;
   border: 2px dashed ${({ theme }) => theme.colors.purple.active(0.3)};
-  border-radius: 16px;
+  border-radius: 8px;
   transition-property: background-color, border;
   transition-duration: 0.2s;
   transition-timing-function: ease-in-out;
