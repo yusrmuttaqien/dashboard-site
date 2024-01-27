@@ -9,6 +9,7 @@ import {
   STORAGE_TODO,
   STORAGE_ACTIVITY,
   STORAGE_REGISTERED_USERNAME,
+  STORAGE_COUNTER,
 } from '@/constants/storages';
 import { CARBON_STATE_DEFAULT_ACTIVE_USERNAME } from '@/constants/states';
 
@@ -37,12 +38,9 @@ export function getSessionStorage(id) {
 }
 
 function _defineNewUser(name) {
-  let newId = Object.keys(getLocalStorage(STORAGE_REGISTERED_USERNAME) || { 0: 0 }).map((id) =>
-    parseInt(id)
-  );
-
-  if (newId.length === 0) newId = [0];
-  newId = Math.max(...newId) + 1;
+  let newId = parseInt(getLocalStorage(STORAGE_COUNTER) || '0');
+  newId += 1;
+  updateLocalStorage(STORAGE_COUNTER, newId);
 
   let registeredUsername = getLocalStorage(STORAGE_REGISTERED_USERNAME);
   if (!registeredUsername) registeredUsername = {};

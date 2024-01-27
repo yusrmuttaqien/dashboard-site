@@ -217,7 +217,10 @@ function NewChatHelper({ states }) {
           To add new user, you can open this site in new tab but on the same browser and log in with
           different username. New user will appear in the popup behind.
         </span>
-        <span>(If you do duplicate tab, make sure you properly logged out on the new tab)</span>
+        <span>
+          (If you do duplicate tab, make sure you properly logged out and re-refresh the page on the
+          new duplicated tab)
+        </span>
         <span>
           (This app is utilizing SessionStorage and LocalStorage for its login session and
           databases, <strong>security is not the main concern here</strong>)
